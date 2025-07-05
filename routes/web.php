@@ -12,6 +12,7 @@ use App\Http\Controllers\ModeleReleveController;
 use App\Http\Controllers\MouvementGazController;
 use App\Http\Controllers\PanneController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\TechnicienController;
 use App\Http\Controllers\VehiculeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 // Routes pour les clients
 Route::resource('clients', ClientController::class)->middleware(['auth', 'verified']);
+
+// Routes pour les techniciens
+Route::resource('techniciens', TechnicienController::class)->middleware(['auth', 'verified']);
 
 // Routes pour les sites
 Route::resource('sites', SiteController::class)->middleware(['auth', 'verified']);
