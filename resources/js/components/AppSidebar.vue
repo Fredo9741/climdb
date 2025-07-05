@@ -16,7 +16,10 @@ import {
     Receipt,
     BookOpen, 
     Folder,
-    Package 
+    Package,
+    Car,
+    Cylinder,
+    ArrowUpDown
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
@@ -112,6 +115,21 @@ const mainNavItems = computed((): NavItem[] => {
                 title: 'Équipements',
                 href: '/equipements',
                 icon: Settings,
+            },
+            {
+                title: 'Véhicules',
+                href: '/vehicules',
+                icon: Car,
+            },
+            {
+                title: 'Bouteilles de Gaz',
+                href: '/bouteilles-gaz',
+                icon: Cylinder,
+            },
+            {
+                title: 'Mouvements de Gaz',
+                href: '/mouvements-gaz',
+                icon: ArrowUpDown,
             },
             {
                 title: 'Devis',
