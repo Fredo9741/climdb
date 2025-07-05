@@ -12,11 +12,18 @@ class TypeEquipementSeeder extends Seeder
      */
     public function run(): void
     {
-        TypeEquipement::query()->delete();
+        $typesEquipement = [
+            ['nom' => 'Split système', 'description' => 'système de climatisation'],
+            ['nom' => 'Rooftop', 'description' => 'système de climatisation pour les bâtiments'],
+            ['nom' => 'GEG', 'description' => 'Groupe eau glacée'],
+            ['nom' => 'Ventilation', 'description' => 'système de ventilation'],
+        ];
 
-        TypeEquipement::create(['nom' => 'Split système', 'description' => 'système de climatisation']);
-        TypeEquipement::create(['nom' => 'Rooftop', 'description' => 'système de climatisation pour les bâtiments']);
-        TypeEquipement::create(['nom' => 'GEG', 'description' => 'Groupe eau glacée']);
-        TypeEquipement::create(['nom' => 'Ventilation', 'description' => 'système de ventilation']);
+        foreach ($typesEquipement as $type) {
+            TypeEquipement::updateOrCreate(
+                ['nom' => $type['nom']],
+                $type
+            );
+        }
     }
 }

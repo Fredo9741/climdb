@@ -9,6 +9,8 @@ class BouteilleGaz extends Model
 {
     use HasFactory;
 
+    protected $table = 'bouteilles_gaz';
+
     protected $fillable = [
         'numero_serie',
         'type_gaz_id',

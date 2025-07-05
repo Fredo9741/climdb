@@ -9,6 +9,8 @@ class StatutBouteille extends Model
 {
     use HasFactory;
 
+    protected $table = 'statuts_bouteilles';
+
     protected $fillable = [
         'nom',
         'description',
