@@ -11,6 +11,9 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ModeleController;
 use App\Http\Controllers\ModeleReleveController;
+use App\Http\Controllers\VehiculeController;
+use App\Http\Controllers\BouteilleGazController;
+use App\Http\Controllers\MouvementGazController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -51,6 +54,15 @@ Route::resource('modeles-releves', ModeleReleveController::class)->middleware(['
 
 // Routes pour les équipements
 Route::resource('equipements', EquipementController::class)->middleware(['auth', 'verified']);
+
+// Routes pour les véhicules
+Route::resource('vehicules', VehiculeController::class)->middleware(['auth', 'verified']);
+
+// Routes pour les bouteilles de gaz
+Route::resource('bouteilles-gaz', BouteilleGazController::class)->middleware(['auth', 'verified']);
+
+// Routes pour les mouvements de gaz
+Route::resource('mouvements-gaz', MouvementGazController::class)->middleware(['auth', 'verified']);
 
 // Routes pour les pannes
 Route::resource('pannes', PanneController::class)->middleware(['auth', 'verified']);

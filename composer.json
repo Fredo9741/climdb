@@ -1,11 +1,14 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/vue-starter-kit",
+    "name": "tdf/gestion-equipements",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Application de gestion d'équipements industriels, véhicules et interventions pour TDF",
     "keywords": [
         "laravel",
-        "framework"
+        "gestion-equipements",
+        "maintenance",
+        "interventions",
+        "tdf"
     ],
     "license": "MIT",
     "require": {
