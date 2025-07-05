@@ -9,6 +9,8 @@ class EntretienVehicule extends Model
 {
     use HasFactory;
 
+    protected $table = 'entretiens_vehicules';
+
     protected $fillable = [
         'vehicule_id',
         'user_id',

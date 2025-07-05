@@ -33,7 +33,7 @@ class MouvementGazController extends Controller
      */
     public function create(): Response
     {
-        $equipements = Equipement::with('client')->get();
+        $equipements = Equipement::with('site.client')->get();
         $typesGaz = TypeGaz::all();
         $interventions = Intervention::with('site')->latest()->get();
         $techniciens = User::role('technicien')->get();
@@ -74,7 +74,7 @@ class MouvementGazController extends Controller
     public function show(MouvementGaz $mouvementGaz): Response
     {
         $mouvementGaz->load([
-            'equipement.client',
+            'equipement.site.client',
             'typeGaz',
             'intervention',
             'user',
@@ -90,7 +90,7 @@ class MouvementGazController extends Controller
      */
     public function edit(MouvementGaz $mouvementGaz): Response
     {
-        $equipements = Equipement::with('client')->get();
+        $equipements = Equipement::with('site.client')->get();
         $typesGaz = TypeGaz::all();
         $interventions = Intervention::with('site')->latest()->get();
         $techniciens = User::role('technicien')->get();

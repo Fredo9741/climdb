@@ -9,6 +9,8 @@ class ReleveMesure extends Model
 {
     use HasFactory;
 
+    protected $table = 'releves_mesures';
+
     protected $fillable = [
         'equipement_id',
         'modele_releve_id',
