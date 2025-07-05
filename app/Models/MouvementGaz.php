@@ -69,4 +69,48 @@ class MouvementGaz extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // --- Scopes ---
+
+    /**
+     * Scope pour les mouvements d'entrée.
+     */
+    public function scopeEntrees($query)
+    {
+        return $query->where('type_mouvement', 'entrée');
+    }
+
+    /**
+     * Scope pour les mouvements de sortie.
+     */
+    public function scopeSorties($query)
+    {
+        return $query->where('type_mouvement', 'sortie');
+    }
+
+    /**
+     * Scope pour les mouvements par période.
+     */
+    public function scopePeriode($query, $dateDebut, $dateFin)
+    {
+        return $query->whereBetween('date_mouvement', [$dateDebut, $dateFin]);
+    }
+
+    // --- Accesseurs ---
+
+    /**
+     * Obtient le libellé du type de mouvement.
+     */
+    public function getTypeMouvementLibelleAttribute()
+    {
+        return ucfirst($this->type_mouvement);
+    }
+
+    /**
+     * Obtient la quantité avec le signe (positif pour entrée, négatif pour sortie).
+     */
+    public function getQuantiteSigneeAttribute()
+    {
+        return $this->type_mouvement === 'entrée' ? $this->quantite_kg : -$this->quantite_kg;
+    }
 }
