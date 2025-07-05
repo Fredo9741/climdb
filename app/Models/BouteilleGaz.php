@@ -52,13 +52,8 @@ class BouteilleGaz extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Une bouteille de gaz peut avoir plusieurs mouvements.
-     */
-    public function mouvements()
-    {
-        return $this->hasMany(MouvementGaz::class);
-    }
+    // Note: Les mouvements de gaz sont liés aux équipements, pas aux bouteilles
+    // Si vous avez besoin de cette relation, ajoutez d'abord la colonne bouteille_gaz_id à la table mouvements_gaz
 
     /**
      * Une bouteille de gaz peut avoir plusieurs photos (relation polymorphique).

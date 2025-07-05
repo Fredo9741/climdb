@@ -36,7 +36,7 @@ class FactureController extends Controller
     {
         $clients = Client::all();
         $devis = Devis::where('statut', 'accepte')->get();
-        $interventions = Intervention::where('resultat', 'reussi')->get();
+        $interventions = Intervention::where('statut', 'terminee')->get();
 
         return Inertia::render('factures/Create', [
             'clients' => $clients,
@@ -109,7 +109,7 @@ class FactureController extends Controller
     {
         $clients = Client::all();
         $devis = Devis::where('statut', 'accepte')->get();
-        $interventions = Intervention::where('resultat', 'reussi')->get();
+        $interventions = Intervention::where('statut', 'terminee')->get();
 
         return Inertia::render('factures/Edit', [
             'facture' => $facture,

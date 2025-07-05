@@ -53,7 +53,7 @@ class MouvementGazController extends Controller
     {
         $validated = $request->validate([
             'equipement_id' => 'required|exists:equipements,id',
-            'type_gaz_id' => 'required|exists:type_gaz,id',
+            'type_gaz_id' => 'required|exists:types_gaz,id',
             'intervention_id' => 'nullable|exists:interventions,id',
             'user_id' => 'required|exists:users,id',
             'type_mouvement' => 'required|in:entrée,sortie',
@@ -111,7 +111,7 @@ class MouvementGazController extends Controller
     {
         $validated = $request->validate([
             'equipement_id' => 'required|exists:equipements,id',
-            'type_gaz_id' => 'required|exists:type_gaz,id',
+            'type_gaz_id' => 'required|exists:types_gaz,id',
             'intervention_id' => 'nullable|exists:interventions,id',
             'user_id' => 'required|exists:users,id',
             'type_mouvement' => 'required|in:entrée,sortie',

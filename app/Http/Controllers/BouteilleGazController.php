@@ -19,7 +19,6 @@ class BouteilleGazController extends Controller
     public function index(): Response
     {
         $bouteilles = BouteilleGaz::with(['typeGaz', 'statutBouteille', 'user'])
-            ->withCount('mouvements')
             ->latest()
             ->get();
 
@@ -50,11 +49,11 @@ class BouteilleGazController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
-            'numero_serie' => 'required|string|max:255|unique:bouteille_gaz,numero_serie',
-            'type_gaz_id' => 'required|exists:type_gaz,id',
+            'numero_serie' => 'required|string|max:255|unique:bouteilles_gaz,numero_serie',
+            'type_gaz_id' => 'required|exists:types_gaz,id',
             'capacite_kg' => 'required|numeric|min:0.1|max:100',
             'poids_actuel_kg' => 'required|numeric|min:0|max:100',
-            'statut_bouteille_id' => 'required|exists:statut_bouteilles,id',
+            'statut_bouteille_id' => 'required|exists:statuts_bouteilles,id',
             'user_id' => 'nullable|exists:users,id',
             'notes' => 'nullable|string|max:1000',
         ]);
@@ -74,9 +73,6 @@ class BouteilleGazController extends Controller
             'typeGaz',
             'statutBouteille',
             'user',
-            'mouvements' => function($query) {
-                $query->with('user')->latest()->limit(10);
-            },
         ]);
 
         return Inertia::render('bouteilles-gaz/Show', [
@@ -107,11 +103,11 @@ class BouteilleGazController extends Controller
     public function update(Request $request, BouteilleGaz $bouteilleGaz): RedirectResponse
     {
         $validated = $request->validate([
-            'numero_serie' => 'required|string|max:255|unique:bouteille_gaz,numero_serie,'.$bouteilleGaz->id,
-            'type_gaz_id' => 'required|exists:type_gaz,id',
+            'numero_serie' => 'required|string|max:255|unique:bouteilles_gaz,numero_serie,'.$bouteilleGaz->id,
+            'type_gaz_id' => 'required|exists:types_gaz,id',
             'capacite_kg' => 'required|numeric|min:0.1|max:100',
             'poids_actuel_kg' => 'required|numeric|min:0|max:100',
-            'statut_bouteille_id' => 'required|exists:statut_bouteilles,id',
+            'statut_bouteille_id' => 'required|exists:statuts_bouteilles,id',
             'user_id' => 'nullable|exists:users,id',
             'notes' => 'nullable|string|max:1000',
         ]);
@@ -127,11 +123,8 @@ class BouteilleGazController extends Controller
      */
     public function destroy(BouteilleGaz $bouteilleGaz): RedirectResponse
     {
-        // Vérifier s'il y a des mouvements récents
-        if ($bouteilleGaz->mouvements()->where('created_at', '>=', now()->subDays(30))->count() > 0) {
-            return redirect()->route('bouteilles-gaz.index')
-                ->with('error', 'Impossible de supprimer cette bouteille car elle a des mouvements récents.');
-        }
+        // Note: Vérification des mouvements désactivée car la relation n'existe pas
+        // Si vous voulez cette fonctionnalité, ajoutez d'abord la colonne bouteille_gaz_id à mouvements_gaz
 
         $bouteilleGaz->delete();
 

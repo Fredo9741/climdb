@@ -51,7 +51,7 @@ class VehiculeController extends Controller
             'kilometrage_actuel' => 'required|numeric|min:0',
             'type_carburant' => 'required|in:Essence,Diesel,Électrique,Hybride,GPL',
             'date_acquisition' => 'required|date',
-            'statut_vehicule_id' => 'required|exists:statut_vehicules,id',
+            'statut_vehicule_id' => 'required|exists:statuts_vehicules,id',
             'notes' => 'nullable|string|max:1000',
         ]);
 
@@ -108,7 +108,7 @@ class VehiculeController extends Controller
             'kilometrage_actuel' => 'required|numeric|min:0',
             'type_carburant' => 'required|in:Essence,Diesel,Électrique,Hybride,GPL',
             'date_acquisition' => 'required|date',
-            'statut_vehicule_id' => 'required|exists:statut_vehicules,id',
+            'statut_vehicule_id' => 'required|exists:statuts_vehicules,id',
             'notes' => 'nullable|string|max:1000',
         ]);
 
