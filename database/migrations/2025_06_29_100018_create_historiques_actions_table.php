@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('historiques_actions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id') // Qui a effectué l'action
-                  ->nullable()
-                  ->constrained('users')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
             $table->string('action_type'); // Ex: "création", "modification", "suppression", "connexion"
             $table->text('description'); // Détail de l'action
             $table->morphs('element'); // L'élément sur lequel l'action a été effectuée (polymorphique)

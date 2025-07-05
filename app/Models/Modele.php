@@ -11,7 +11,7 @@ class Modele extends Model
 
     protected $fillable = [
         'type_equipement_id', 'marque', 'nom', 'reference_constructeur',
-        'description', 'quantite_gaz_kg', 'type_gaz_id', 'modele_releve_defaut_id'
+        'description', 'quantite_gaz_kg', 'type_gaz_id', 'modele_releve_defaut_id',
     ];
 
     // --- Relations ---

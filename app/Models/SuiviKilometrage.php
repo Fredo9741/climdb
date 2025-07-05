@@ -16,12 +16,12 @@ class SuiviKilometrage extends Model
         'user_id',
         'kilometrage',
         'date_releve',
-        'observations'
+        'observations',
     ];
 
     protected $casts = [
         'date_releve' => 'datetime',
-        'kilometrage' => 'decimal:0'
+        'kilometrage' => 'decimal:0',
     ];
 
     // --- Relations ---

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\ModeleReleve;
 use App\Models\ElementModeleReleve;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
+use App\Models\ModeleReleve;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+use Inertia\Response;
 
 final class ModeleReleveController extends Controller
 {
@@ -36,7 +36,7 @@ final class ModeleReleveController extends Controller
     public function create(): Response
     {
         return Inertia::render('admin/modeles-releves/Create', [
-            'modele' => new ModeleReleve(),
+            'modele' => new ModeleReleve,
             'elements' => [],
         ]);
     }
@@ -70,7 +70,7 @@ final class ModeleReleveController extends Controller
             ]);
 
             // Créer les éléments de modèle de relevé
-            if (!empty($validated['elements'])) {
+            if (! empty($validated['elements'])) {
                 foreach ($validated['elements'] as $index => $elementData) {
                     ElementModeleReleve::create([
                         'modele_releve_id' => $modele->id,
@@ -93,7 +93,7 @@ final class ModeleReleveController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return Redirect::back()
                 ->withInput()
                 ->withErrors(['error' => 'Une erreur s\'est produite lors de la création du modèle de relevé.']);
@@ -131,7 +131,7 @@ final class ModeleReleveController extends Controller
     public function update(Request $request, ModeleReleve $modeleReleve): RedirectResponse
     {
         $validated = $request->validate([
-            'nom' => 'required|string|max:255|unique:modeles_releves,nom,' . $modeleReleve->id,
+            'nom' => 'required|string|max:255|unique:modeles_releves,nom,'.$modeleReleve->id,
             'description' => 'nullable|string',
             'elements' => 'nullable|array',
             'elements.*.id' => 'nullable|integer|exists:elements_modele_releve,id',
@@ -165,7 +165,7 @@ final class ModeleReleveController extends Controller
                 ->delete();
 
             // Créer ou mettre à jour les éléments
-            if (!empty($validated['elements'])) {
+            if (! empty($validated['elements'])) {
                 foreach ($validated['elements'] as $index => $elementData) {
                     $elementParams = [
                         'modele_releve_id' => $modeleReleve->id,
@@ -197,7 +197,7 @@ final class ModeleReleveController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return Redirect::back()
                 ->withInput()
                 ->withErrors(['error' => 'Une erreur s\'est produite lors de la mise à jour du modèle de relevé.']);
@@ -230,9 +230,9 @@ final class ModeleReleveController extends Controller
 
         } catch (\Exception $e) {
             DB::rollBack();
-            
+
             return Redirect::back()
                 ->withErrors(['error' => 'Une erreur s\'est produite lors de la suppression du modèle de relevé.']);
         }
     }
-} 
+}

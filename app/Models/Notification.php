@@ -16,12 +16,12 @@ class Notification extends Model
         'type',
         'lu',
         'date_lecture',
-        'action_url'
+        'action_url',
     ];
 
     protected $casts = [
         'lu' => 'boolean',
-        'date_lecture' => 'datetime'
+        'date_lecture' => 'datetime',
     ];
 
     // --- Relations ---
@@ -61,7 +61,7 @@ class Notification extends Model
     {
         $this->update([
             'lu' => true,
-            'date_lecture' => now()
+            'date_lecture' => now(),
         ]);
     }
 }

@@ -16,12 +16,12 @@ class BouteilleGaz extends Model
         'poids_actuel_kg',
         'statut_bouteille_id',
         'user_id',
-        'notes'
+        'notes',
     ];
 
     protected $casts = [
         'capacite_kg' => 'decimal:2',
-        'poids_actuel_kg' => 'decimal:2'
+        'poids_actuel_kg' => 'decimal:2',
     ];
 
     // --- Relations ---
@@ -81,7 +81,7 @@ class BouteilleGaz extends Model
      */
     public function scopeDisponibles($query)
     {
-        return $query->whereHas('statutBouteille', function($q) {
+        return $query->whereHas('statutBouteille', function ($q) {
             $q->where('nom', 'Disponible');
         });
     }
@@ -112,6 +112,7 @@ class BouteilleGaz extends Model
         if ($this->capacite_kg > 0) {
             return round(($this->poids_actuel_kg / $this->capacite_kg) * 100, 1);
         }
+
         return 0;
     }
 
@@ -144,6 +145,6 @@ class BouteilleGaz extends Model
      */
     public function getNomCompletAttribute()
     {
-        return $this->numero_serie . ' (' . $this->typeGaz->nom ?? 'N/A' . ')';
+        return $this->numero_serie.' ('.$this->typeGaz->nom ?? 'N/A'.')';
     }
 }

@@ -15,17 +15,17 @@ return new class extends Migration
             $table->id();
             $table->string('numero_serie')->unique();
             $table->foreignId('type_gaz_id')
-                  ->constrained('types_gaz')
-                  ->onDelete('restrict');
+                ->constrained('types_gaz')
+                ->onDelete('restrict');
             $table->decimal('capacite_kg', 8, 2);
             $table->decimal('poids_actuel_kg', 8, 2);
             $table->foreignId('statut_bouteille_id')
-                  ->constrained('statuts_bouteilles')
-                  ->onDelete('restrict');
+                ->constrained('statuts_bouteilles')
+                ->onDelete('restrict');
             $table->foreignId('user_id') // Le technicien qui a la bouteille si elle est affectée
-                  ->nullable()
-                  ->constrained('users')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

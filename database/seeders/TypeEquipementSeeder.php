@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\TypeEquipement;
+use Illuminate\Database\Seeder;
 
 class TypeEquipementSeeder extends Seeder
 {

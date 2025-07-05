@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('notifications', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id') // À quel utilisateur la notification est destinée
-                  ->constrained('users')
-                  ->onDelete('cascade');
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->string('titre');
             $table->text('message');
             $table->string('type_notification')->default('info'); // Ex: "info", "alerte", "rappel", "urgence"

@@ -75,7 +75,7 @@ final class Intervention extends Model
     public function piecesDetachees(): BelongsToMany
     {
         return $this->belongsToMany(PieceDetachee::class, 'intervention_piece_detachee')
-                    ->withPivot('quantite_utilisee')
-                    ->withTimestamps();
+            ->withPivot('quantite_utilisee')
+            ->withTimestamps();
     }
 }

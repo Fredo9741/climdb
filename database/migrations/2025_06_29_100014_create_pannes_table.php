@@ -14,21 +14,21 @@ return new class extends Migration
         Schema::create('pannes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('equipement_id')
-                  ->constrained('equipements')
-                  ->onDelete('cascade');
+                ->constrained('equipements')
+                ->onDelete('cascade');
             $table->text('description_panne');
             $table->text('actions_correctives')->nullable();
             $table->foreignId('statut_demande_id')
-                  ->default(1) // Par défaut "En attente"
-                  ->constrained('statuts_demandes')
-                  ->onDelete('restrict');
+                ->default(1) // Par défaut "En attente"
+                ->constrained('statuts_demandes')
+                ->onDelete('restrict');
             $table->enum('priorite', ['faible', 'moyenne', 'haute', 'urgente'])
-                  ->default('moyenne'); // Priorité par défaut
+                ->default('moyenne'); // Priorité par défaut
             $table->dateTime('date_constat');
             $table->dateTime('date_resolution')->nullable();
             $table->foreignId('user_id')->nullable() // Qui a enregistré la panne (souvent le technicien ou client)
-                  ->constrained('users')
-                  ->onDelete('set null');
+                ->constrained('users')
+                ->onDelete('set null');
             $table->timestamps();
         });
     }

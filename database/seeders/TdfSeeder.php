@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Client;
-use App\Models\Site;
-use App\Models\TypeGaz;
-use App\Models\TypeEquipement;
-use App\Models\Modele;
 use App\Models\Equipement;
+use App\Models\Modele;
+use App\Models\Site;
+use App\Models\TypeEquipement;
+use App\Models\TypeGaz;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
 
 class TdfSeeder extends Seeder
 {
@@ -37,7 +36,7 @@ class TdfSeeder extends Seeder
             ]
         );
 
-        $this->command->info('✅ Client TDF créé : ' . $client->nom);
+        $this->command->info('✅ Client TDF créé : '.$client->nom);
 
         // 2. Insert Gas Types
         // Les GWP sont des valeurs standards, ajustées si des données plus précises sont trouvées dans le PDF
@@ -56,7 +55,7 @@ class TdfSeeder extends Seeder
             $gasTypeIds[$gasData['nom']] = $gasType->id;
         }
 
-        $this->command->info('✅ Types de gaz créés : ' . count($gasTypes));
+        $this->command->info('✅ Types de gaz créés : '.count($gasTypes));
 
         // 3. Insert Equipment Type
         $equipType = TypeEquipement::updateOrCreate(
@@ -69,7 +68,7 @@ class TdfSeeder extends Seeder
             ]
         );
 
-        $this->command->info('✅ Type d\'équipement créé : ' . $equipType->nom);
+        $this->command->info('✅ Type d\'équipement créé : '.$equipType->nom);
 
         // 4. Insert Sites TDF
         // Les adresses sont extraites du PDF
@@ -114,7 +113,7 @@ class TdfSeeder extends Seeder
             $site = Site::updateOrCreate(
                 [
                     'client_id' => $client->id,
-                    'nom' => $siteData['nom']
+                    'nom' => $siteData['nom'],
                 ],
                 [
                     'client_id' => $client->id,
@@ -130,7 +129,7 @@ class TdfSeeder extends Seeder
             $siteIds[$siteData['nom']] = $site->id; // Stocke l'ID du site avec son nom comme clé
         }
 
-        $this->command->info('✅ Sites TDF créés : ' . count($sites));
+        $this->command->info('✅ Sites TDF créés : '.count($sites));
 
         // 5. Insert Modèles d'équipements
         // Données extraites directement du PDF, en nettoyant et standardisant les références
@@ -243,7 +242,7 @@ class TdfSeeder extends Seeder
                 [
                     'type_equipement_id' => $equipType->id,
                     'marque' => $modeleData['marque'],
-                    'nom' => $modeleData['marque'] . ' ' . $modeleData['reference'],
+                    'nom' => $modeleData['marque'].' '.$modeleData['reference'],
                     'reference_constructeur' => $modeleData['reference'],
                     'quantite_gaz_kg' => $modeleData['quantite_gaz_kg'],
                     'type_gaz_id' => $gasTypeIds[$modeleData['type_gaz']],
@@ -251,10 +250,10 @@ class TdfSeeder extends Seeder
                     'updated_at' => $now,
                 ]
             );
-            $modeleIds[$modeleData['marque'] . ' ' . $modeleData['reference']] = $modele->id;
+            $modeleIds[$modeleData['marque'].' '.$modeleData['reference']] = $modele->id;
         }
 
-        $this->command->info('✅ Modèles d\'équipements créés : ' . count($modeles));
+        $this->command->info('✅ Modèles d\'équipements créés : '.count($modeles));
 
         // 6. Insert Équipements
         // Données extraites du PDF
@@ -423,7 +422,7 @@ class TdfSeeder extends Seeder
 
         $equipementCounter = 0;
         foreach ($equipementsData as $equipData) {
-            $modeleKey = $equipData['marque'] . ' ' . $equipData['modele_ref'];
+            $modeleKey = $equipData['marque'].' '.$equipData['modele_ref'];
             $modeleId = $modeleIds[$modeleKey] ?? null;
 
             if ($modeleId) {
@@ -447,20 +446,20 @@ class TdfSeeder extends Seeder
                 );
                 $equipementCounter++;
             } else {
-                $this->command->warn("⚠️ Modèle non trouvé pour l'équipement : " . $modeleKey);
+                $this->command->warn("⚠️ Modèle non trouvé pour l'équipement : ".$modeleKey);
             }
         }
 
-        $this->command->info('✅ Équipements créés : ' . $equipementCounter);
+        $this->command->info('✅ Équipements créés : '.$equipementCounter);
 
         // Résumé final
         $this->command->info('');
         $this->command->info('🎉 === SEEDING TDF COMPLET TERMINÉ ===');
         $this->command->info("📊 Client créé : {$client->nom}");
-        $this->command->info("🏢 Sites créés : " . count($sites));
-        $this->command->info("🔧 Modèles créés : " . count($modeles));
-        $this->command->info("⚙️ Équipements créés : " . $equipementCounter);
-        $this->command->info("🌡️ Types de gaz créés : " . count($gasTypes));
+        $this->command->info('🏢 Sites créés : '.count($sites));
+        $this->command->info('🔧 Modèles créés : '.count($modeles));
+        $this->command->info('⚙️ Équipements créés : '.$equipementCounter);
+        $this->command->info('🌡️ Types de gaz créés : '.count($gasTypes));
         $this->command->info('');
     }
 }

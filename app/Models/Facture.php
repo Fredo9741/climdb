@@ -20,14 +20,14 @@ class Facture extends Model
         'montant_ttc',
         'statut',
         'description',
-        'conditions_paiement'
+        'conditions_paiement',
     ];
 
     protected $casts = [
         'date_facture' => 'date',
         'date_echeance' => 'date',
         'montant_ht' => 'decimal:2',
-        'montant_ttc' => 'decimal:2'
+        'montant_ttc' => 'decimal:2',
     ];
 
     // --- Relations ---
@@ -62,8 +62,8 @@ class Facture extends Model
     public function equipements()
     {
         return $this->belongsToMany(Equipement::class, 'facture_equipements')
-                    ->withPivot(['prix_unitaire', 'quantite', 'description'])
-                    ->withTimestamps();
+            ->withPivot(['prix_unitaire', 'quantite', 'description'])
+            ->withTimestamps();
     }
 
     // --- Scopes ---
@@ -102,6 +102,7 @@ class Facture extends Model
         if ($this->montant_ht > 0) {
             return round((($this->montant_ttc - $this->montant_ht) / $this->montant_ht) * 100, 2);
         }
+
         return 0;
     }
 
@@ -121,6 +122,7 @@ class Facture extends Model
         if ($this->is_en_retard) {
             return now()->diffInDays($this->date_echeance);
         }
+
         return 0;
     }
 }

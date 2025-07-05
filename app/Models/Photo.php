@@ -10,7 +10,7 @@ class Photo extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_fichier', 'chemin_stockage', 'description', 'element_id', 'element_type', 'user_id'
+        'nom_fichier', 'chemin_stockage', 'description', 'element_id', 'element_type', 'user_id',
     ];
 
     // --- Relations ---

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Panne;
 use App\Models\Equipement;
+use App\Models\Panne;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -75,4 +75,4 @@ class PanneSeeder extends Seeder
             Panne::create($panneData);
         }
     }
-} 
+}

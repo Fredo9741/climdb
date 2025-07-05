@@ -18,11 +18,11 @@ return new class extends Migration
             $table->text('description')->nullable();
             // Colonnes pour la relation polymorphique (element_id et element_type)
             $table->morphs('element'); // Créera element_id (BIGINT UNSIGNED) et element_type (VARCHAR)
-                                       // ex: element_id = 1, element_type = 'App\Models\Equipement'
+            // ex: element_id = 1, element_type = 'App\Models\Equipement'
             $table->foreignId('user_id') // Qui a uploadé la photo
-                  ->nullable()
-                  ->constrained('users')
-                  ->onDelete('set null'); // Si l'utilisateur est supprimé, le lien est annulé
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null'); // Si l'utilisateur est supprimé, le lien est annulé
             $table->timestamps();
         });
     }

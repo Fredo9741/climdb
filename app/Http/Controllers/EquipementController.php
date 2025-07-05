@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Equipement;
-use App\Models\Site;
 use App\Models\Modele;
-use Illuminate\Http\Request;
+use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,38 +18,38 @@ class EquipementController extends Controller
     public function index(Request $request): Response
     {
         $search = $request->get('search');
-        
+
         $equipements = Equipement::with([
-            'site.client', 
-            'modele.typeEquipement', 
-            'modele.typeGaz'
+            'site.client',
+            'modele.typeEquipement',
+            'modele.typeGaz',
         ])
             ->when($search, function ($query, $search) {
                 return $query->where(function ($q) use ($search) {
                     $q->where('nom', 'like', "%{$search}%")
-                      ->orWhere('numero_serie', 'like', "%{$search}%")
-                      ->orWhere('localisation_precise', 'like', "%{$search}%")
-                      ->orWhere('etat', 'like', "%{$search}%")
-                      ->orWhereHas('site', function ($q) use ($search) {
-                          $q->where('nom', 'like', "%{$search}%");
-                      })
-                      ->orWhereHas('site.client', function ($q) use ($search) {
-                          $q->where('nom', 'like', "%{$search}%")
-                            ->orWhere('nom_entreprise', 'like', "%{$search}%");
-                      })
-                      ->orWhereHas('modele', function ($q) use ($search) {
-                          $q->where('nom', 'like', "%{$search}%")
-                            ->orWhere('marque', 'like', "%{$search}%");
-                      })
-                      ->orWhereHas('modele.typeEquipement', function ($q) use ($search) {
-                          $q->where('nom', 'like', "%{$search}%");
-                      });
+                        ->orWhere('numero_serie', 'like', "%{$search}%")
+                        ->orWhere('localisation_precise', 'like', "%{$search}%")
+                        ->orWhere('etat', 'like', "%{$search}%")
+                        ->orWhereHas('site', function ($q) use ($search) {
+                            $q->where('nom', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('site.client', function ($q) use ($search) {
+                            $q->where('nom', 'like', "%{$search}%")
+                                ->orWhere('nom_entreprise', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('modele', function ($q) use ($search) {
+                            $q->where('nom', 'like', "%{$search}%")
+                                ->orWhere('marque', 'like', "%{$search}%");
+                        })
+                        ->orWhereHas('modele.typeEquipement', function ($q) use ($search) {
+                            $q->where('nom', 'like', "%{$search}%");
+                        });
                 });
             })
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
-        
+
         return Inertia::render('equipements/Index', [
             'equipements' => $equipements,
             'filters' => [
@@ -65,10 +65,10 @@ class EquipementController extends Controller
     {
         $sites = Site::with('client')->get();
         $modeles = Modele::with(['typeEquipement', 'typeGaz'])->get();
-        
+
         return Inertia::render('equipements/Create', [
             'sites' => $sites,
-            'modeles' => $modeles
+            'modeles' => $modeles,
         ]);
     }
 
@@ -106,11 +106,11 @@ class EquipementController extends Controller
             'modele.typeGaz',
             'pannes',
             'maintenancesProgrammees',
-            'mouvementsGaz'
+            'mouvementsGaz',
         ]);
-        
+
         return Inertia::render('equipements/Show', [
-            'equipement' => $equipement
+            'equipement' => $equipement,
         ]);
     }
 
@@ -121,11 +121,11 @@ class EquipementController extends Controller
     {
         $sites = Site::with('client')->get();
         $modeles = Modele::with(['typeEquipement', 'typeGaz'])->get();
-        
+
         return Inertia::render('equipements/Edit', [
             'equipement' => $equipement,
             'sites' => $sites,
-            'modeles' => $modeles
+            'modeles' => $modeles,
         ]);
     }
 
@@ -137,7 +137,7 @@ class EquipementController extends Controller
         $validated = $request->validate([
             'site_id' => 'required|exists:sites,id',
             'modele_id' => 'required|exists:modeles,id',
-            'numero_serie' => 'required|string|max:255|unique:equipements,numero_serie,' . $equipement->id,
+            'numero_serie' => 'required|string|max:255|unique:equipements,numero_serie,'.$equipement->id,
             'nom' => 'required|string|max:255',
             'description' => 'nullable|string',
             'date_installation' => 'required|date',
@@ -161,7 +161,7 @@ class EquipementController extends Controller
             // Vérifier s'il y a des pannes ou interventions liées
             $pannesCount = $equipement->pannes()->count();
             $maintenancesCount = $equipement->maintenancesProgrammees()->count();
-            
+
             if ($pannesCount > 0 || $maintenancesCount > 0) {
                 return redirect()->route('equipements.index')
                     ->with('error', "Impossible de supprimer l'équipement '{$equipement->nom}' car il a {$pannesCount} panne(s) et {$maintenancesCount} maintenance(s) associée(s).");
@@ -172,10 +172,10 @@ class EquipementController extends Controller
 
             return redirect()->route('equipements.index')
                 ->with('success', "Équipement '{$nomEquipement}' supprimé avec succès !");
-                
+
         } catch (\Exception $e) {
             return redirect()->route('equipements.index')
-                ->with('error', 'Erreur lors de la suppression : ' . $e->getMessage());
+                ->with('error', 'Erreur lors de la suppression : '.$e->getMessage());
         }
     }
 }

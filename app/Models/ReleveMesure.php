@@ -16,12 +16,12 @@ class ReleveMesure extends Model
         'date_releve',
         'valeurs',
         'observations',
-        'statut'
+        'statut',
     ];
 
     protected $casts = [
         'date_releve' => 'datetime',
-        'valeurs' => 'array'
+        'valeurs' => 'array',
     ];
 
     // --- Relations ---

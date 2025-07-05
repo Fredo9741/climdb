@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\Site;
 use App\Models\Client;
+use App\Models\Site;
+use Illuminate\Database\Seeder;
 
 class SiteSeeder extends Seeder
 {

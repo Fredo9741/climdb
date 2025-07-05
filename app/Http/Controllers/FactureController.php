@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Facture;
 use App\Models\Client;
 use App\Models\Devis;
+use App\Models\Facture;
 use App\Models\Intervention;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,11 +21,11 @@ class FactureController extends Controller
         $factures = Facture::with([
             'client',
             'devis',
-            'interventions'
+            'interventions',
         ])->latest()->get();
-        
+
         return Inertia::render('factures/Index', [
-            'factures' => $factures
+            'factures' => $factures,
         ]);
     }
 
@@ -37,11 +37,11 @@ class FactureController extends Controller
         $clients = Client::all();
         $devis = Devis::where('statut', 'accepte')->get();
         $interventions = Intervention::where('resultat', 'reussi')->get();
-        
+
         return Inertia::render('factures/Create', [
             'clients' => $clients,
             'devis' => $devis,
-            'interventions' => $interventions
+            'interventions' => $interventions,
         ]);
     }
 
@@ -77,7 +77,7 @@ class FactureController extends Controller
                 $facture->interventions()->attach($intervention['intervention_id'], [
                     'prix_unitaire' => $intervention['prix_unitaire'],
                     'quantite' => $intervention['quantite'],
-                    'description' => $intervention['description'] ?? null
+                    'description' => $intervention['description'] ?? null,
                 ]);
             }
         }
@@ -94,11 +94,11 @@ class FactureController extends Controller
         $facture->load([
             'client',
             'devis',
-            'interventions.equipement.site'
+            'interventions.equipement.site',
         ]);
-        
+
         return Inertia::render('factures/Show', [
-            'facture' => $facture
+            'facture' => $facture,
         ]);
     }
 
@@ -110,12 +110,12 @@ class FactureController extends Controller
         $clients = Client::all();
         $devis = Devis::where('statut', 'accepte')->get();
         $interventions = Intervention::where('resultat', 'reussi')->get();
-        
+
         return Inertia::render('factures/Edit', [
             'facture' => $facture,
             'clients' => $clients,
             'devis' => $devis,
-            'interventions' => $interventions
+            'interventions' => $interventions,
         ]);
     }
 
@@ -127,7 +127,7 @@ class FactureController extends Controller
         $validated = $request->validate([
             'client_id' => 'required|exists:clients,id',
             'devis_id' => 'nullable|exists:devis,id',
-            'numero' => 'required|string|max:255|unique:factures,numero,' . $facture->id,
+            'numero' => 'required|string|max:255|unique:factures,numero,'.$facture->id,
             'date_emission' => 'required|date',
             'date_echeance' => 'required|date|after:date_emission',
             'montant_ht' => 'required|numeric|min:0',
@@ -187,14 +187,14 @@ class FactureController extends Controller
         $facture = Facture::create([
             'client_id' => $devis->client_id,
             'devis_id' => $devis->id,
-            'numero' => 'FAC-' . date('Y') . '-' . str_pad(Facture::count() + 1, 4, '0', STR_PAD_LEFT),
+            'numero' => 'FAC-'.date('Y').'-'.str_pad(Facture::count() + 1, 4, '0', STR_PAD_LEFT),
             'date_emission' => now(),
             'date_echeance' => now()->addDays(30),
             'montant_ht' => $devis->montant_ht,
             'tva' => $devis->tva,
             'montant_ttc' => $devis->montant_ttc,
             'statut' => 'emise',
-            'description' => 'Facture générée depuis le devis ' . $devis->numero,
+            'description' => 'Facture générée depuis le devis '.$devis->numero,
             'conditions_paiement' => $devis->conditions_paiement,
         ]);
 

@@ -8,14 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class PersonneContact extends Model
 {
     protected $table = 'personnes_contact';
-    
+
     protected $fillable = [
         'nom',
         'prenom',
         'fonction',
         'telephone',
         'email',
-        'notes'
+        'notes',
     ];
 
     /**

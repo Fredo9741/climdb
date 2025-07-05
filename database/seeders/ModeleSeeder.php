@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Modele;
+use App\Models\ModeleReleve;
 use App\Models\TypeEquipement;
 use App\Models\TypeGaz;
-use App\Models\ModeleReleve;
+use Illuminate\Database\Seeder;
 
 class ModeleSeeder extends Seeder
 {

@@ -20,9 +20,9 @@ return new class extends Migration
             // Colonnes pour la relation polymorphique
             $table->morphs('element'); // element_id (int) et element_type (string)
             $table->foreignId('user_id') // Qui a uploadé le document
-                  ->nullable()
-                  ->constrained('users')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('users')
+                ->onDelete('set null');
             $table->timestamps();
         });
     }

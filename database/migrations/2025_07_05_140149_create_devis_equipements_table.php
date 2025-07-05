@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('devis_equipements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('devis_id')
-                  ->constrained('devis')
-                  ->onDelete('cascade');
+                ->constrained('devis')
+                ->onDelete('cascade');
             $table->foreignId('equipement_id')
-                  ->constrained('equipements')
-                  ->onDelete('cascade');
+                ->constrained('equipements')
+                ->onDelete('cascade');
             $table->decimal('prix_unitaire', 10, 2);
             $table->integer('quantite')->default(1);
             $table->text('description')->nullable();

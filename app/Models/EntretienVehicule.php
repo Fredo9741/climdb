@@ -19,7 +19,7 @@ class EntretienVehicule extends Model
         'description',
         'pieces_changees',
         'prochaine_echeance_km',
-        'prochaine_echeance_date'
+        'prochaine_echeance_date',
     ];
 
     protected $casts = [
@@ -28,7 +28,7 @@ class EntretienVehicule extends Model
         'cout' => 'decimal:2',
         'kilometrage' => 'decimal:0',
         'prochaine_echeance_km' => 'decimal:0',
-        'pieces_changees' => 'array'
+        'pieces_changees' => 'array',
     ];
 
     // --- Relations ---

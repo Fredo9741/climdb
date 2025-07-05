@@ -11,7 +11,7 @@ class Devis extends Model
 
     protected $fillable = [
         'client_id',
-        'site_id', 
+        'site_id',
         'numero',
         'date_creation',
         'date_validite',
@@ -20,7 +20,7 @@ class Devis extends Model
         'tva',
         'statut',
         'description',
-        'conditions_paiement'
+        'conditions_paiement',
     ];
 
     protected $casts = [
@@ -28,7 +28,7 @@ class Devis extends Model
         'date_validite' => 'date',
         'montant_ht' => 'decimal:2',
         'montant_ttc' => 'decimal:2',
-        'tva' => 'decimal:2'
+        'tva' => 'decimal:2',
     ];
 
     // --- Relations ---
@@ -55,8 +55,8 @@ class Devis extends Model
     public function equipements()
     {
         return $this->belongsToMany(Equipement::class, 'devis_equipements')
-                    ->withPivot(['prix_unitaire', 'quantite', 'description'])
-                    ->withTimestamps();
+            ->withPivot(['prix_unitaire', 'quantite', 'description'])
+            ->withTimestamps();
     }
 
     /**

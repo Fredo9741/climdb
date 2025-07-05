@@ -10,7 +10,7 @@ class Document extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nom_document', 'chemin_stockage', 'type_document', 'description', 'element_id', 'element_type', 'user_id'
+        'nom_document', 'chemin_stockage', 'type_document', 'description', 'element_id', 'element_type', 'user_id',
     ];
 
     // --- Relations ---

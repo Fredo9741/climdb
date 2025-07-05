@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Site;
 use App\Models\Client;
-use Illuminate\Http\Request;
+use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -17,9 +17,9 @@ class SiteController extends Controller
     public function index(): Response
     {
         $sites = Site::with(['client', 'equipements'])->latest()->get();
-        
+
         return Inertia::render('sites/Index', [
-            'sites' => $sites
+            'sites' => $sites,
         ]);
     }
 
@@ -29,9 +29,9 @@ class SiteController extends Controller
     public function create(): Response
     {
         $clients = Client::all();
-        
+
         return Inertia::render('sites/Create', [
-            'clients' => $clients
+            'clients' => $clients,
         ]);
     }
 
@@ -63,9 +63,9 @@ class SiteController extends Controller
     public function show(Site $site): Response
     {
         $site->load(['client', 'equipements.modele']);
-        
+
         return Inertia::render('sites/Show', [
-            'site' => $site
+            'site' => $site,
         ]);
     }
 
@@ -75,10 +75,10 @@ class SiteController extends Controller
     public function edit(Site $site): Response
     {
         $clients = Client::all();
-        
+
         return Inertia::render('sites/Edit', [
             'site' => $site,
-            'clients' => $clients
+            'clients' => $clients,
         ]);
     }
 

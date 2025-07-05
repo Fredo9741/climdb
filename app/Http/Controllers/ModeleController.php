@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Modele;
+use App\Models\ModeleReleve;
 use App\Models\TypeEquipement;
 use App\Models\TypeGaz;
-use App\Models\ModeleReleve;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -22,11 +22,11 @@ class ModeleController extends Controller
             'typeEquipement',
             'typeGaz',
             'modeleReleveDefaut',
-            'equipements' // Pour compter les équipements utilisant ce modèle
+            'equipements', // Pour compter les équipements utilisant ce modèle
         ])->latest()->get();
 
         return Inertia::render('modeles/Index', [
-            'modeles' => $modeles
+            'modeles' => $modeles,
         ]);
     }
 
@@ -42,7 +42,7 @@ class ModeleController extends Controller
         return Inertia::render('modeles/Create', [
             'typesEquipements' => $typesEquipements,
             'typesGaz' => $typesGaz,
-            'modelesReleves' => $modelesReleves
+            'modelesReleves' => $modelesReleves,
         ]);
     }
 
@@ -79,11 +79,11 @@ class ModeleController extends Controller
             'modeleReleveDefaut',
             'equipements.site.client', // Équipements utilisant ce modèle
             'photos',
-            'documents'
+            'documents',
         ]);
 
         return Inertia::render('modeles/Show', [
-            'modele' => $modele
+            'modele' => $modele,
         ]);
     }
 
@@ -100,7 +100,7 @@ class ModeleController extends Controller
             'modele' => $modele,
             'typesEquipements' => $typesEquipements,
             'typesGaz' => $typesGaz,
-            'modelesReleves' => $modelesReleves
+            'modelesReleves' => $modelesReleves,
         ]);
     }
 
@@ -113,7 +113,7 @@ class ModeleController extends Controller
             'type_equipement_id' => 'required|exists:types_equipements,id',
             'marque' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
-            'reference_constructeur' => 'nullable|string|max:255|unique:modeles,reference_constructeur,' . $modele->id,
+            'reference_constructeur' => 'nullable|string|max:255|unique:modeles,reference_constructeur,'.$modele->id,
             'description' => 'nullable|string',
             'quantite_gaz_kg' => 'nullable|numeric|min:0',
             'type_gaz_id' => 'nullable|exists:types_gaz,id',

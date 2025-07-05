@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use App\Models\Equipement;
-use App\Models\Panne;
-use App\Models\Intervention;
 use App\Models\Devis;
+use App\Models\Equipement;
 use App\Models\Facture;
+use App\Models\Intervention;
+use App\Models\Panne;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;

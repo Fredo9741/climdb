@@ -15,12 +15,12 @@ class AffectationVehicule extends Model
         'date_debut',
         'date_fin',
         'motif',
-        'observations'
+        'observations',
     ];
 
     protected $casts = [
         'date_debut' => 'date',
-        'date_fin' => 'date'
+        'date_fin' => 'date',
     ];
 
     // --- Relations ---
@@ -49,9 +49,9 @@ class AffectationVehicule extends Model
     public function scopeActives($query)
     {
         return $query->where('date_debut', '<=', now())
-                    ->where(function($q) {
-                        $q->whereNull('date_fin')
-                          ->orWhere('date_fin', '>=', now());
-                    });
+            ->where(function ($q) {
+                $q->whereNull('date_fin')
+                    ->orWhere('date_fin', '>=', now());
+            });
     }
 }

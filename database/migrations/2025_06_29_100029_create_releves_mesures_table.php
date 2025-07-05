@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('releves_mesures', function (Blueprint $table) {
             $table->id();
             $table->foreignId('intervention_id')
-                  ->constrained('interventions')
-                  ->onDelete('cascade'); // Si une intervention est supprimée, ses relevés aussi
+                ->constrained('interventions')
+                ->onDelete('cascade'); // Si une intervention est supprimée, ses relevés aussi
             $table->foreignId('equipement_id')
-                  ->constrained('equipements')
-                  ->onDelete('cascade'); // L'équipement sur lequel la mesure a été prise
+                ->constrained('equipements')
+                ->onDelete('cascade'); // L'équipement sur lequel la mesure a été prise
             $table->foreignId('user_id') // Le technicien qui a pris la mesure
-                  ->constrained('users')
-                  ->onDelete('restrict');
+                ->constrained('users')
+                ->onDelete('restrict');
 
             $table->string('type_mesure'); // Ex: "Température", "Pression", "Débit d'air"
             $table->float('valeur');

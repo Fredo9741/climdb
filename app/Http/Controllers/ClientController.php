@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,9 +16,9 @@ class ClientController extends Controller
     public function index(): Response
     {
         $clients = Client::withCount('sites')->latest()->get();
-        
+
         return Inertia::render('clients/Index', [
-            'clients' => $clients
+            'clients' => $clients,
         ]);
     }
 
@@ -57,9 +57,9 @@ class ClientController extends Controller
     public function show(Client $client): Response
     {
         $client->load('sites.equipements');
-        
+
         return Inertia::render('clients/Show', [
-            'client' => $client
+            'client' => $client,
         ]);
     }
 
@@ -69,7 +69,7 @@ class ClientController extends Controller
     public function edit(Client $client): Response
     {
         return Inertia::render('clients/Edit', [
-            'client' => $client
+            'client' => $client,
         ]);
     }
 
@@ -85,7 +85,7 @@ class ClientController extends Controller
             'code_postal' => 'required|string|max:10',
             'pays' => 'required|string|max:100',
             'telephone' => 'required|string|max:20',
-            'email' => 'required|email|unique:clients,email,' . $client->id,
+            'email' => 'required|email|unique:clients,email,'.$client->id,
         ]);
 
         $client->update($validated);

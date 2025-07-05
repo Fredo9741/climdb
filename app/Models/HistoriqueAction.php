@@ -17,12 +17,12 @@ class HistoriqueAction extends Model
         'anciennes_valeurs',
         'nouvelles_valeurs',
         'ip_address',
-        'user_agent'
+        'user_agent',
     ];
 
     protected $casts = [
         'anciennes_valeurs' => 'array',
-        'nouvelles_valeurs' => 'array'
+        'nouvelles_valeurs' => 'array',
     ];
 
     // --- Relations ---

@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-use App\Models\ModeleReleve;
 use App\Models\ElementModeleReleve;
+use App\Models\ModeleReleve;
+use Illuminate\Database\Seeder;
 
 class ModeleReleveSeeder extends Seeder
 {
@@ -33,7 +32,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 18.0,
                 'obligatoire' => true,
                 'ordre' => 1,
-                'commentaire_guide' => 'Mesurer la température de l\'air sortant de l\'unité intérieure après 15 minutes de fonctionnement'
+                'commentaire_guide' => 'Mesurer la température de l\'air sortant de l\'unité intérieure après 15 minutes de fonctionnement',
             ],
             [
                 'type_mesure' => 'Température Reprise',
@@ -43,7 +42,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 28.0,
                 'obligatoire' => true,
                 'ordre' => 2,
-                'commentaire_guide' => 'Mesurer la température de l\'air entrant dans l\'unité intérieure'
+                'commentaire_guide' => 'Mesurer la température de l\'air entrant dans l\'unité intérieure',
             ],
             [
                 'type_mesure' => 'Pression Haute Pression (HP)',
@@ -53,7 +52,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 25.0,
                 'obligatoire' => true,
                 'ordre' => 3,
-                'commentaire_guide' => 'Mesurer la pression haute pression au niveau du compresseur'
+                'commentaire_guide' => 'Mesurer la pression haute pression au niveau du compresseur',
             ],
             [
                 'type_mesure' => 'Pression Basse Pression (BP)',
@@ -63,7 +62,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 7.0,
                 'obligatoire' => true,
                 'ordre' => 4,
-                'commentaire_guide' => 'Mesurer la pression basse pression au niveau du compresseur'
+                'commentaire_guide' => 'Mesurer la pression basse pression au niveau du compresseur',
             ],
             [
                 'type_mesure' => 'Intensité Électrique',
@@ -73,7 +72,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => null,
                 'obligatoire' => false,
                 'ordre' => 5,
-                'commentaire_guide' => 'Mesurer l\'intensité électrique consommée par l\'unité extérieure'
+                'commentaire_guide' => 'Mesurer l\'intensité électrique consommée par l\'unité extérieure',
             ],
             [
                 'type_mesure' => 'Tension Électrique',
@@ -83,13 +82,13 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 240.0,
                 'obligatoire' => false,
                 'ordre' => 6,
-                'commentaire_guide' => 'Vérifier la tension d\'alimentation de l\'unité extérieure'
-            ]
+                'commentaire_guide' => 'Vérifier la tension d\'alimentation de l\'unité extérieure',
+            ],
         ];
 
         foreach ($elementsMaintenanceClim as $elementData) {
             ElementModeleReleve::create(array_merge($elementData, [
-                'modele_releve_id' => $modeleMaintenanceClim->id
+                'modele_releve_id' => $modeleMaintenanceClim->id,
             ]));
         }
 
@@ -108,7 +107,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => null,
                 'obligatoire' => true,
                 'ordre' => 1,
-                'commentaire_guide' => 'Mesurer la température de surface de l\'évaporateur'
+                'commentaire_guide' => 'Mesurer la température de surface de l\'évaporateur',
             ],
             [
                 'type_mesure' => 'Température Condenseur',
@@ -118,7 +117,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => null,
                 'obligatoire' => true,
                 'ordre' => 2,
-                'commentaire_guide' => 'Mesurer la température de surface du condenseur'
+                'commentaire_guide' => 'Mesurer la température de surface du condenseur',
             ],
             [
                 'type_mesure' => 'Surchauffe',
@@ -128,7 +127,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 15.0,
                 'obligatoire' => true,
                 'ordre' => 3,
-                'commentaire_guide' => 'Calculer la surchauffe : température gaz - température évaporation'
+                'commentaire_guide' => 'Calculer la surchauffe : température gaz - température évaporation',
             ],
             [
                 'type_mesure' => 'Sous-refroidissement',
@@ -138,7 +137,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 8.0,
                 'obligatoire' => true,
                 'ordre' => 4,
-                'commentaire_guide' => 'Calculer le sous-refroidissement : température condensation - température liquide'
+                'commentaire_guide' => 'Calculer le sous-refroidissement : température condensation - température liquide',
             ],
             [
                 'type_mesure' => 'État Filtre',
@@ -148,13 +147,13 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => null,
                 'obligatoire' => false,
                 'ordre' => 5,
-                'commentaire_guide' => 'Indiquer l\'état du filtre : Propre / Sale / Obstrué'
-            ]
+                'commentaire_guide' => 'Indiquer l\'état du filtre : Propre / Sale / Obstrué',
+            ],
         ];
 
         foreach ($elementsDiagnosticPanne as $elementData) {
             ElementModeleReleve::create(array_merge($elementData, [
-                'modele_releve_id' => $modeleDiagnosticPanne->id
+                'modele_releve_id' => $modeleDiagnosticPanne->id,
             ]));
         }
 
@@ -173,7 +172,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 45.0,
                 'obligatoire' => true,
                 'ordre' => 1,
-                'commentaire_guide' => 'Effectuer un test d\'étanchéité à l\'azote avant mise en service'
+                'commentaire_guide' => 'Effectuer un test d\'étanchéité à l\'azote avant mise en service',
             ],
             [
                 'type_mesure' => 'Tirage au Vide',
@@ -183,7 +182,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => 0.5,
                 'obligatoire' => true,
                 'ordre' => 2,
-                'commentaire_guide' => 'Effectuer un tirage au vide complet du circuit avant chargement'
+                'commentaire_guide' => 'Effectuer un tirage au vide complet du circuit avant chargement',
             ],
             [
                 'type_mesure' => 'Débit d\'Air',
@@ -193,7 +192,7 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => null,
                 'obligatoire' => false,
                 'ordre' => 3,
-                'commentaire_guide' => 'Mesurer le débit d\'air de l\'unité intérieure'
+                'commentaire_guide' => 'Mesurer le débit d\'air de l\'unité intérieure',
             ],
             [
                 'type_mesure' => 'Puissance Absorbée',
@@ -203,13 +202,13 @@ class ModeleReleveSeeder extends Seeder
                 'valeur_max_attendue' => null,
                 'obligatoire' => false,
                 'ordre' => 4,
-                'commentaire_guide' => 'Mesurer la puissance électrique absorbée en fonctionnement nominal'
-            ]
+                'commentaire_guide' => 'Mesurer la puissance électrique absorbée en fonctionnement nominal',
+            ],
         ];
 
         foreach ($elementsMiseEnService as $elementData) {
             ElementModeleReleve::create(array_merge($elementData, [
-                'modele_releve_id' => $modeleMiseEnService->id
+                'modele_releve_id' => $modeleMiseEnService->id,
             ]));
         }
 

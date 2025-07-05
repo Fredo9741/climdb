@@ -18,13 +18,13 @@ class Vehicule extends Model
         'type_carburant',
         'date_acquisition',
         'statut_vehicule_id',
-        'notes'
+        'notes',
     ];
 
     protected $casts = [
         'date_acquisition' => 'date',
         'kilometrage_actuel' => 'decimal:0',
-        'annee_fabrication' => 'integer'
+        'annee_fabrication' => 'integer',
     ];
 
     // --- Relations ---
@@ -84,7 +84,7 @@ class Vehicule extends Model
      */
     public function scopeActifs($query)
     {
-        return $query->whereHas('statutVehicule', function($q) {
+        return $query->whereHas('statutVehicule', function ($q) {
             $q->where('nom', '!=', 'Hors service');
         });
     }
@@ -107,6 +107,7 @@ class Vehicule extends Model
         if ($this->annee_fabrication) {
             return now()->year - $this->annee_fabrication;
         }
+
         return null;
     }
 
@@ -115,7 +116,7 @@ class Vehicule extends Model
      */
     public function getNomCompletAttribute()
     {
-        return $this->marque . ' ' . $this->modele . ' (' . $this->immatriculation . ')';
+        return $this->marque.' '.$this->modele.' ('.$this->immatriculation.')';
     }
 
     /**

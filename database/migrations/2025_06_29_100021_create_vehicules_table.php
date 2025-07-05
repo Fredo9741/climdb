@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('type_carburant')->nullable(); // Ex: "Essence", "Diesel", "Électrique"
             $table->date('date_acquisition')->nullable();
             $table->foreignId('statut_vehicule_id')
-                  ->constrained('statuts_vehicules')
-                  ->onDelete('restrict');
+                ->constrained('statuts_vehicules')
+                ->onDelete('restrict');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

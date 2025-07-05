@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Client;
-use App\Models\Site;
-use App\Models\Equipement;
-use App\Models\Panne;
-use App\Models\Intervention;
 use App\Models\Devis;
+use App\Models\Equipement;
 use App\Models\Facture;
+use App\Models\Intervention;
+use App\Models\Panne;
+use App\Models\Site;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Route;
@@ -41,26 +41,26 @@ final class TestApplication extends Command
 
         // Test de la base de données
         $this->testDatabase();
-        
+
         // Test des routes
         $this->testRoutes();
-        
+
         // Test des contrôleurs
         $this->testControllers();
-        
+
         // Test des vues
         $this->testViews();
-        
+
         $this->line('');
         $this->info('✅ Tests terminés avec succès !');
-        
+
         return 0;
     }
 
     private function testDatabase(): void
     {
         $this->info('📊 Test de la base de données...');
-        
+
         $users = User::count();
         $clients = Client::count();
         $sites = Site::count();
@@ -69,7 +69,7 @@ final class TestApplication extends Command
         $interventions = Intervention::count();
         $devis = Devis::count();
         $factures = Facture::count();
-        
+
         $this->line("   👥 Utilisateurs: {$users}");
         $this->line("   🏢 Clients: {$clients}");
         $this->line("   🏗️  Sites: {$sites}");
@@ -78,22 +78,22 @@ final class TestApplication extends Command
         $this->line("   🔨 Interventions: {$interventions}");
         $this->line("   📋 Devis: {$devis}");
         $this->line("   🧾 Factures: {$factures}");
-        
+
         // Test utilisateur admin
         $admin = User::where('email', 'admin@climdb.fr')->first();
         if ($admin && $admin->hasRole('admin')) {
-            $this->line("   ✅ Utilisateur admin configuré correctement");
+            $this->line('   ✅ Utilisateur admin configuré correctement');
         } else {
             $this->line("   ❌ Problème avec l'utilisateur admin");
         }
-        
+
         $this->line('');
     }
 
     private function testRoutes(): void
     {
         $this->info('🛣️  Test des routes...');
-        
+
         $routes = [
             'dashboard',
             'clients.index', 'clients.create', 'clients.show', 'clients.edit',
@@ -102,18 +102,18 @@ final class TestApplication extends Command
             'pannes.index', 'pannes.create', 'pannes.show', 'pannes.edit',
             'interventions.index', 'interventions.create', 'interventions.show', 'interventions.edit',
             'devis.index',
-            'factures.index'
+            'factures.index',
         ];
-        
+
         $routeCollection = Route::getRoutes();
         $existingRoutes = [];
-        
+
         foreach ($routeCollection as $route) {
             if ($route->getName()) {
                 $existingRoutes[] = $route->getName();
             }
         }
-        
+
         foreach ($routes as $routeName) {
             if (in_array($routeName, $existingRoutes)) {
                 $this->line("   ✅ Route '{$routeName}' existe");
@@ -121,14 +121,14 @@ final class TestApplication extends Command
                 $this->line("   ❌ Route '{$routeName}' manquante");
             }
         }
-        
+
         $this->line('');
     }
 
     private function testControllers(): void
     {
         $this->info('🎮 Test des contrôleurs...');
-        
+
         $controllers = [
             'App\Http\Controllers\DashboardController' => ['index'],
             'App\Http\Controllers\ClientController' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
@@ -137,15 +137,15 @@ final class TestApplication extends Command
             'App\Http\Controllers\PanneController' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
             'App\Http\Controllers\InterventionController' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
             'App\Http\Controllers\DevisController' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
-            'App\Http\Controllers\FactureController' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']
+            'App\Http\Controllers\FactureController' => ['index', 'create', 'store', 'show', 'edit', 'update', 'destroy'],
         ];
-        
+
         foreach ($controllers as $controllerClass => $methods) {
             $controllerName = class_basename($controllerClass);
-            
+
             if (class_exists($controllerClass)) {
                 $this->line("   ✅ Contrôleur {$controllerName} existe");
-                
+
                 foreach ($methods as $method) {
                     if (method_exists($controllerClass, $method)) {
                         $this->line("      ✅ Méthode {$method}");
@@ -157,14 +157,14 @@ final class TestApplication extends Command
                 $this->line("   ❌ Contrôleur {$controllerName} manquant");
             }
         }
-        
+
         $this->line('');
     }
 
     private function testViews(): void
     {
         $this->info('🖼️  Test des vues...');
-        
+
         $views = [
             'resources/js/pages/Dashboard.vue',
             'resources/js/pages/clients/Index.vue',
@@ -186,9 +186,9 @@ final class TestApplication extends Command
             'resources/js/pages/interventions/Show.vue',
             'resources/js/pages/interventions/Edit.vue',
             'resources/js/pages/devis/Index.vue',
-            'resources/js/pages/factures/Index.vue'
+            'resources/js/pages/factures/Index.vue',
         ];
-        
+
         foreach ($views as $view) {
             if (file_exists(base_path($view))) {
                 $this->line("   ✅ Vue {$view} existe");
@@ -196,7 +196,7 @@ final class TestApplication extends Command
                 $this->line("   ❌ Vue {$view} manquante");
             }
         }
-        
+
         $this->line('');
     }
 }

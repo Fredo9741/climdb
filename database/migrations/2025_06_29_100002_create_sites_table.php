@@ -23,8 +23,8 @@ return new class extends Migration
 
             // Clé étrangère vers la table 'clients'
             $table->foreignId('client_id')
-                  ->constrained('clients')
-                  ->onDelete('cascade'); // Si un client est supprimé, ses sites sont aussi supprimés.
+                ->constrained('clients')
+                ->onDelete('cascade'); // Si un client est supprimé, ses sites sont aussi supprimés.
 
             $table->timestamps();
         });

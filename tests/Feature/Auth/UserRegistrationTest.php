@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Auth;
 
-use Tests\TestCase;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 final class UserRegistrationTest extends TestCase
 {
@@ -18,7 +18,7 @@ final class UserRegistrationTest extends TestCase
         \Spatie\Permission\Models\Role::create(['name' => 'admin', 'guard_name' => 'web']);
         \Spatie\Permission\Models\Role::create(['name' => 'technicien', 'guard_name' => 'web']);
         \Spatie\Permission\Models\Role::create(['name' => 'client', 'guard_name' => 'web']);
-        
+
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -28,12 +28,12 @@ final class UserRegistrationTest extends TestCase
 
         $this->assertAuthenticated();
         $response->assertRedirect('/dashboard');
-        
+
         $this->assertDatabaseHas('users', [
             'email' => 'test@example.com',
             'name' => 'Test User',
         ]);
-        
+
         // Vérifions que l'utilisateur a bien le rôle technicien
         $user = \App\Models\User::where('email', 'test@example.com')->first();
         $this->assertTrue($user->hasRole('technicien'));
@@ -80,4 +80,4 @@ final class UserRegistrationTest extends TestCase
         $response->assertSessionHasErrors('email');
         $this->assertGuest();
     }
-} 
+}

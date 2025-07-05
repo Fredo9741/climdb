@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 final class DemandeClient extends Model
 {
     protected $table = 'demandes_clients';
-    
+
     protected $fillable = [
         'client_id',
         'site_id',
@@ -20,12 +20,12 @@ final class DemandeClient extends Model
         'priorite',
         'statut_demande_id',
         'date_demande',
-        'date_souhaite_intervention'
+        'date_souhaite_intervention',
     ];
 
     protected $casts = [
         'date_demande' => 'datetime',
-        'date_souhaite_intervention' => 'datetime'
+        'date_souhaite_intervention' => 'datetime',
     ];
 
     /**
@@ -59,4 +59,4 @@ final class DemandeClient extends Model
     {
         return $this->hasMany(Intervention::class);
     }
-} 
+}

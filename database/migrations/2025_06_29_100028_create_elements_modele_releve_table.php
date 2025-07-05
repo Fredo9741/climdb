@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('elements_modele_releve', function (Blueprint $table) {
             $table->id();
             $table->foreignId('modele_releve_id')
-                  ->constrained('modeles_releves')
-                  ->onDelete('cascade'); // Si un modèle de relevé est supprimé, ses éléments le sont aussi.
+                ->constrained('modeles_releves')
+                ->onDelete('cascade'); // Si un modèle de relevé est supprimé, ses éléments le sont aussi.
 
             $table->string('type_mesure'); // Ex: "Température", "Pression", "Débit d'air"
             $table->string('unite_attendue')->nullable(); // Unité suggérée ou obligatoire (ex: "°C", "bar", "L/s")

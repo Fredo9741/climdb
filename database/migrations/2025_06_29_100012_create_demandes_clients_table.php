@@ -14,17 +14,17 @@ return new class extends Migration
         Schema::create('demandes_clients', function (Blueprint $table) {
             $table->id();
             $table->foreignId('site_id')
-                  ->constrained('sites')
-                  ->onDelete('cascade');
+                ->constrained('sites')
+                ->onDelete('cascade');
             $table->foreignId('equipement_id')
-                  ->constrained('equipements')
-                  ->onDelete('cascade');
+                ->constrained('equipements')
+                ->onDelete('cascade');
             $table->foreignId('personne_contact_id')
-                  ->constrained('personnes_contact')
-                  ->onDelete('cascade');
+                ->constrained('personnes_contact')
+                ->onDelete('cascade');
             $table->foreignId('statut_id')
-                  ->constrained('statuts_demandes')
-                  ->onDelete('restrict');
+                ->constrained('statuts_demandes')
+                ->onDelete('restrict');
             $table->text('description'); // Description détaillée de la demande du client
             $table->date('date_soumission');
             $table->date('date_cloture')->nullable(); // Date à laquelle la demande a été résolue ou annulée
@@ -39,4 +39,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('demandes_clients');
     }
-}; 
+};

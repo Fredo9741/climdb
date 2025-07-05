@@ -23,12 +23,12 @@ return new class extends Migration
 
             // Clés étrangères
             $table->foreignId('site_id')
-                  ->constrained('sites')
-                  ->onDelete('cascade'); // Si un site est supprimé, ses équipements sont aussi supprimés.
+                ->constrained('sites')
+                ->onDelete('cascade'); // Si un site est supprimé, ses équipements sont aussi supprimés.
 
             $table->foreignId('modele_id')
-                  ->constrained('modeles')
-                  ->onDelete('restrict'); // Un équipement ne peut exister sans son modèle.
+                ->constrained('modeles')
+                ->onDelete('restrict'); // Un équipement ne peut exister sans son modèle.
 
             $table->timestamps();
         });

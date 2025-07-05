@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('factures', function (Blueprint $table) {
             $table->id();
             $table->foreignId('devis_id')
-                  ->nullable()
-                  ->constrained('devis')
-                  ->onDelete('set null');
+                ->nullable()
+                ->constrained('devis')
+                ->onDelete('set null');
             $table->foreignId('client_id')
-                  ->constrained('clients')
-                  ->onDelete('restrict');
+                ->constrained('clients')
+                ->onDelete('restrict');
             $table->string('numero_facture')->unique();
             $table->date('date_facture');
             $table->date('date_echeance');

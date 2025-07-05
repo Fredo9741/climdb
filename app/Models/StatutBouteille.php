@@ -12,7 +12,7 @@ class StatutBouteille extends Model
     protected $fillable = [
         'nom',
         'description',
-        'couleur'
+        'couleur',
     ];
 
     // --- Relations ---

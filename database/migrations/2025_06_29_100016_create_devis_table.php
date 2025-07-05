@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('devis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')
-                  ->constrained('clients')
-                  ->onDelete('restrict'); // Ne pas supprimer un client si un devis existe
+                ->constrained('clients')
+                ->onDelete('restrict'); // Ne pas supprimer un client si un devis existe
             $table->foreignId('site_id')
-                  ->nullable()
-                  ->constrained('sites')
-                  ->onDelete('set null'); // Optionnel
+                ->nullable()
+                ->constrained('sites')
+                ->onDelete('set null'); // Optionnel
             $table->string('numero_devis')->unique();
             $table->date('date_devis');
             $table->date('date_expiration')->nullable();

@@ -8,19 +8,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class PieceDetachee extends Model
 {
     protected $table = 'pieces_detachees';
-    
+
     protected $fillable = [
         'nom',
         'reference',
         'description',
         'prix_unitaire',
         'fournisseur',
-        'stock_minimum'
+        'stock_minimum',
     ];
 
     protected $casts = [
         'prix_unitaire' => 'decimal:2',
-        'stock_minimum' => 'integer'
+        'stock_minimum' => 'integer',
     ];
 
     /**

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('affectations_vehicules', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vehicule_id')
-                  ->constrained('vehicules')
-                  ->onDelete('cascade');
+                ->constrained('vehicules')
+                ->onDelete('cascade');
             $table->foreignId('user_id') // Le technicien ou l'utilisateur affecté
-                  ->constrained('users')
-                  ->onDelete('cascade');
+                ->constrained('users')
+                ->onDelete('cascade');
             $table->dateTime('date_debut');
             $table->dateTime('date_fin')->nullable(); // Peut être nulle si affectation en cours
             $table->text('motif')->nullable();

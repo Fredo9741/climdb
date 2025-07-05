@@ -16,7 +16,7 @@ return new class extends Migration
             $table->renameColumn('numero_devis', 'numero');
             $table->renameColumn('date_devis', 'date_creation');
             $table->renameColumn('date_expiration', 'date_validite');
-            
+
             // Ajouter les nouveaux champs requis par le contrôleur
             $table->decimal('tva', 5, 2)->default(20.00)->after('montant_ttc');
             $table->text('conditions_paiement')->nullable()->after('description');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->renameColumn('numero', 'numero_devis');
             $table->renameColumn('date_creation', 'date_devis');
             $table->renameColumn('date_validite', 'date_expiration');
-            
+
             // Supprimer les champs ajoutés
             $table->dropColumn(['tva', 'conditions_paiement']);
         });

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('inventaire_pieces', function (Blueprint $table) {
             $table->id();
             $table->foreignId('piece_detachee_id')
-                  ->constrained('pieces_detachees')
-                  ->onDelete('cascade');
+                ->constrained('pieces_detachees')
+                ->onDelete('cascade');
             $table->foreignId('site_id') // Peut représenter un bureau ou un camion si modélisé comme un site
-                  ->constrained('sites')
-                  ->onDelete('cascade');
+                ->constrained('sites')
+                ->onDelete('cascade');
             $table->integer('quantite_disponible')->default(0);
             $table->unique(['piece_detachee_id', 'site_id']); // Une pièce, un site
             $table->timestamps();

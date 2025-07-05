@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\TypeGaz;
+use Illuminate\Database\Seeder;
 
 class TypeGazSeeder extends Seeder
 {

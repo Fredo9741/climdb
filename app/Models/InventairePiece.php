@@ -8,20 +8,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class InventairePiece extends Model
 {
     protected $table = 'inventaire_pieces';
-    
+
     protected $fillable = [
         'piece_detachee_id',
         'site_id',
         'quantite_stock',
         'emplacement',
         'date_derniere_entree',
-        'date_derniere_sortie'
+        'date_derniere_sortie',
     ];
 
     protected $casts = [
         'quantite_stock' => 'integer',
         'date_derniere_entree' => 'date',
-        'date_derniere_sortie' => 'date'
+        'date_derniere_sortie' => 'date',
     ];
 
     /**

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Devis;
 use App\Models\Client;
-use App\Models\Site;
+use App\Models\Devis;
 use App\Models\Equipement;
-use Illuminate\Http\Request;
+use App\Models\Site;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,11 +21,11 @@ class DevisController extends Controller
         $devis = Devis::with([
             'client',
             'site',
-            'equipements.modele'
+            'equipements.modele',
         ])->latest()->get();
-        
+
         return Inertia::render('devis/Index', [
-            'devis' => $devis
+            'devis' => $devis,
         ]);
     }
 
@@ -37,11 +37,11 @@ class DevisController extends Controller
         $clients = Client::all();
         $sites = Site::with('client')->get();
         $equipements = Equipement::with(['site.client', 'modele'])->get();
-        
+
         return Inertia::render('devis/Create', [
             'clients' => $clients,
             'sites' => $sites,
-            'equipements' => $equipements
+            'equipements' => $equipements,
         ]);
     }
 
@@ -77,7 +77,7 @@ class DevisController extends Controller
                 $devis->equipements()->attach($equipement['equipement_id'], [
                     'prix_unitaire' => $equipement['prix_unitaire'],
                     'quantite' => $equipement['quantite'],
-                    'description' => $equipement['description'] ?? null
+                    'description' => $equipement['description'] ?? null,
                 ]);
             }
         }
@@ -95,11 +95,11 @@ class DevisController extends Controller
             'client',
             'site',
             'equipements.modele',
-            'factures'
+            'factures',
         ]);
-        
+
         return Inertia::render('devis/Show', [
-            'devis' => $devis
+            'devis' => $devis,
         ]);
     }
 
@@ -111,12 +111,12 @@ class DevisController extends Controller
         $clients = Client::all();
         $sites = Site::with('client')->get();
         $equipements = Equipement::with(['site.client', 'modele'])->get();
-        
+
         return Inertia::render('devis/Edit', [
             'devis' => $devis,
             'clients' => $clients,
             'sites' => $sites,
-            'equipements' => $equipements
+            'equipements' => $equipements,
         ]);
     }
 
@@ -128,7 +128,7 @@ class DevisController extends Controller
         $validated = $request->validate([
             'client_id' => 'required|exists:clients,id',
             'site_id' => 'nullable|exists:sites,id',
-            'numero' => 'required|string|max:255|unique:devis,numero,' . $devis->id,
+            'numero' => 'required|string|max:255|unique:devis,numero,'.$devis->id,
             'date_creation' => 'required|date',
             'date_validite' => 'required|date|after:date_creation',
             'montant_ht' => 'required|numeric|min:0',

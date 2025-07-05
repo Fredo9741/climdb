@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('personne_contact_site', function (Blueprint $table) {
             $table->id();
             $table->foreignId('personne_contact_id')
-                  ->constrained('personnes_contact')
-                  ->onDelete('cascade');
+                ->constrained('personnes_contact')
+                ->onDelete('cascade');
             $table->foreignId('site_id')
-                  ->constrained('sites')
-                  ->onDelete('cascade');
+                ->constrained('sites')
+                ->onDelete('cascade');
             $table->unique(['personne_contact_id', 'site_id']); // Empêche le doublon
             $table->timestamps();
         });

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Panne;
 use App\Models\Equipement;
+use App\Models\Panne;
 use App\Models\StatutDemande;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,11 +20,11 @@ class PanneController extends Controller
         $pannes = Panne::with([
             'equipement.site.client',
             'equipement.modele',
-            'statutDemande'
+            'statutDemande',
         ])->latest()->get();
-        
+
         return Inertia::render('pannes/Index', [
-            'pannes' => $pannes
+            'pannes' => $pannes,
         ]);
     }
 
@@ -34,9 +34,9 @@ class PanneController extends Controller
     public function create(): Response
     {
         $equipements = Equipement::with(['site.client', 'modele'])->get();
-        
+
         return Inertia::render('pannes/Create', [
-            'equipements' => $equipements
+            'equipements' => $equipements,
         ]);
     }
 
@@ -59,7 +59,7 @@ class PanneController extends Controller
 
         $panne = Panne::create($validated);
 
-        // Mettre à jour l'état de l'équipement 
+        // Mettre à jour l'état de l'équipement
         $panne->equipement->update(['etat' => 'panne']);
 
         return redirect()->route('pannes.index')
@@ -76,11 +76,11 @@ class PanneController extends Controller
             'equipement.modele',
             'statutDemande',
             'user',
-            'interventions'
+            'interventions',
         ]);
-        
+
         return Inertia::render('pannes/Show', [
-            'panne' => $panne
+            'panne' => $panne,
         ]);
     }
 
@@ -91,11 +91,11 @@ class PanneController extends Controller
     {
         $equipements = Equipement::with(['site.client', 'modele'])->get();
         $statuts = StatutDemande::all();
-        
+
         return Inertia::render('pannes/Edit', [
             'panne' => $panne,
             'equipements' => $equipements,
-            'statuts' => $statuts
+            'statuts' => $statuts,
         ]);
     }
 

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Equipement;
 use App\Models\Intervention;
 use App\Models\Panne;
-use App\Models\Equipement;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,14 +20,14 @@ class InterventionController extends Controller
     {
         $interventions = Intervention::with([
             'panne.equipement.site.client',
-            'panne.equipement.modele.typeEquipement', 
+            'panne.equipement.modele.typeEquipement',
             'technicien',
             'demandeClient',
-            'maintenanceProgrammee'
+            'maintenanceProgrammee',
         ])->latest('date_planifiee')->get();
-        
+
         return Inertia::render('interventions/Index', [
-            'interventions' => $interventions
+            'interventions' => $interventions,
         ]);
     }
 
@@ -39,11 +39,11 @@ class InterventionController extends Controller
         $pannes = Panne::with(['equipement.site.client'])->where('statut_demande_id', '!=', 3)->get();
         $equipements = Equipement::with(['site.client'])->get();
         $techniciens = User::role('technicien')->get();
-        
+
         return Inertia::render('interventions/Create', [
             'pannes' => $pannes,
             'equipements' => $equipements,
-            'techniciens' => $techniciens
+            'techniciens' => $techniciens,
         ]);
     }
 
@@ -76,27 +76,27 @@ class InterventionController extends Controller
         ];
 
         // Si on a des observations, les ajouter au rapport
-        if (!empty($validated['observations'])) {
-            $interventionData['rapport'] .= "\n\nObservations: " . $validated['observations'];
+        if (! empty($validated['observations'])) {
+            $interventionData['rapport'] .= "\n\nObservations: ".$validated['observations'];
         }
 
         // Ajouter les informations de coût et durée au rapport
         $infosComplementaires = [];
-        if (!empty($validated['type_intervention'])) {
-            $infosComplementaires[] = "Type: " . $validated['type_intervention'];
+        if (! empty($validated['type_intervention'])) {
+            $infosComplementaires[] = 'Type: '.$validated['type_intervention'];
         }
-        if (!empty($validated['duree_estimee'])) {
-            $infosComplementaires[] = "Durée estimée: " . $validated['duree_estimee'] . "h";
+        if (! empty($validated['duree_estimee'])) {
+            $infosComplementaires[] = 'Durée estimée: '.$validated['duree_estimee'].'h';
         }
-        if (!empty($validated['cout_main_oeuvre'])) {
-            $infosComplementaires[] = "Coût main d'œuvre: " . $validated['cout_main_oeuvre'] . "€";
+        if (! empty($validated['cout_main_oeuvre'])) {
+            $infosComplementaires[] = "Coût main d'œuvre: ".$validated['cout_main_oeuvre'].'€';
         }
-        if (!empty($validated['cout_pieces'])) {
-            $infosComplementaires[] = "Coût pièces: " . $validated['cout_pieces'] . "€";
+        if (! empty($validated['cout_pieces'])) {
+            $infosComplementaires[] = 'Coût pièces: '.$validated['cout_pieces'].'€';
         }
 
-        if (!empty($infosComplementaires)) {
-            $interventionData['rapport'] .= "\n\n" . implode("\n", $infosComplementaires);
+        if (! empty($infosComplementaires)) {
+            $interventionData['rapport'] .= "\n\n".implode("\n", $infosComplementaires);
         }
 
         $intervention = Intervention::create($interventionData);
@@ -112,11 +112,11 @@ class InterventionController extends Controller
     {
         $intervention->load([
             'panne.equipement.site.client',
-            'technicien'
+            'technicien',
         ]);
-        
+
         return Inertia::render('interventions/Show', [
-            'intervention' => $intervention
+            'intervention' => $intervention,
         ]);
     }
 
@@ -128,7 +128,7 @@ class InterventionController extends Controller
         $pannes = Panne::with(['equipement.site.client'])->get();
         $equipements = Equipement::with(['site.client', 'modele'])->get();
         $techniciens = User::role('technicien')->get();
-        
+
         // Convertir les données de la base vers le format attendu par le formulaire
         $interventionForForm = [
             'id' => $intervention->id,
@@ -142,14 +142,14 @@ class InterventionController extends Controller
             'duree_estimee' => $this->extractDureeFromRapport($intervention->rapport),
             'cout_main_oeuvre' => $this->extractCoutMainOeuvreFromRapport($intervention->rapport),
             'cout_pieces' => $this->extractCoutPiecesFromRapport($intervention->rapport),
-            'statut' => $intervention->statut
+            'statut' => $intervention->statut,
         ];
-        
+
         return Inertia::render('interventions/Edit', [
             'intervention' => $interventionForForm,
             'pannes' => $pannes,
             'equipements' => $equipements,
-            'techniciens' => $techniciens
+            'techniciens' => $techniciens,
         ]);
     }
 
@@ -160,7 +160,7 @@ class InterventionController extends Controller
     {
         // Debug temporaire - voir quelles données arrivent
         \Log::info('Données reçues pour update intervention:', $request->all());
-        
+
         $validated = $request->validate([
             'panne_id' => 'nullable|exists:pannes,id',
             'equipement_id' => 'nullable|exists:equipements,id',
@@ -187,27 +187,27 @@ class InterventionController extends Controller
         ];
 
         // Si on a des observations, les ajouter au rapport
-        if (!empty($validated['observations'])) {
-            $interventionData['rapport'] .= "\n\nObservations: " . $validated['observations'];
+        if (! empty($validated['observations'])) {
+            $interventionData['rapport'] .= "\n\nObservations: ".$validated['observations'];
         }
 
         // Ajouter les informations de coût et durée au rapport
         $infosComplementaires = [];
-        if (!empty($validated['type_intervention'])) {
-            $infosComplementaires[] = "Type: " . $validated['type_intervention'];
+        if (! empty($validated['type_intervention'])) {
+            $infosComplementaires[] = 'Type: '.$validated['type_intervention'];
         }
-        if (!empty($validated['duree_estimee'])) {
-            $infosComplementaires[] = "Durée estimée: " . $validated['duree_estimee'] . "h";
+        if (! empty($validated['duree_estimee'])) {
+            $infosComplementaires[] = 'Durée estimée: '.$validated['duree_estimee'].'h';
         }
-        if (!empty($validated['cout_main_oeuvre'])) {
-            $infosComplementaires[] = "Coût main d'œuvre: " . $validated['cout_main_oeuvre'] . "€";
+        if (! empty($validated['cout_main_oeuvre'])) {
+            $infosComplementaires[] = "Coût main d'œuvre: ".$validated['cout_main_oeuvre'].'€';
         }
-        if (!empty($validated['cout_pieces'])) {
-            $infosComplementaires[] = "Coût pièces: " . $validated['cout_pieces'] . "€";
+        if (! empty($validated['cout_pieces'])) {
+            $infosComplementaires[] = 'Coût pièces: '.$validated['cout_pieces'].'€';
         }
 
-        if (!empty($infosComplementaires)) {
-            $interventionData['rapport'] .= "\n\n" . implode("\n", $infosComplementaires);
+        if (! empty($infosComplementaires)) {
+            $interventionData['rapport'] .= "\n\n".implode("\n", $infosComplementaires);
         }
 
         \Log::info('Données à sauvegarder:', $interventionData);
@@ -237,6 +237,7 @@ class InterventionController extends Controller
         if (preg_match('/Type: (.+?)(?:\n|$)/m', $rapport, $matches)) {
             return $matches[1];
         }
+
         return '';
     }
 
@@ -245,9 +246,9 @@ class InterventionController extends Controller
         // La description est la première partie avant les observations ou infos complémentaires
         $lines = explode("\n", $rapport);
         $description = [];
-        
+
         foreach ($lines as $line) {
-            if (str_starts_with($line, 'Observations:') || 
+            if (str_starts_with($line, 'Observations:') ||
                 str_starts_with($line, 'Type:') ||
                 str_starts_with($line, 'Durée estimée:') ||
                 str_starts_with($line, 'Coût')) {
@@ -255,7 +256,7 @@ class InterventionController extends Controller
             }
             $description[] = $line;
         }
-        
+
         return trim(implode("\n", $description));
     }
 
@@ -264,6 +265,7 @@ class InterventionController extends Controller
         if (preg_match('/Observations: (.+?)(?:\n\n|$)/s', $rapport, $matches)) {
             return trim($matches[1]);
         }
+
         return '';
     }
 
@@ -272,6 +274,7 @@ class InterventionController extends Controller
         if (preg_match('/Durée estimée: (.+?)h/m', $rapport, $matches)) {
             return $matches[1];
         }
+
         return '';
     }
 
@@ -280,6 +283,7 @@ class InterventionController extends Controller
         if (preg_match('/Coût main d\'œuvre: (.+?)€/m', $rapport, $matches)) {
             return $matches[1];
         }
+
         return '';
     }
 
@@ -288,6 +292,7 @@ class InterventionController extends Controller
         if (preg_match('/Coût pièces: (.+?)€/m', $rapport, $matches)) {
             return $matches[1];
         }
+
         return '';
     }
 }

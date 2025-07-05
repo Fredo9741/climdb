@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\StatutDemande;
+use Illuminate\Database\Seeder;
 
 class StatutDemandeSeeder extends Seeder
 {
@@ -34,4 +34,4 @@ class StatutDemandeSeeder extends Seeder
             'description' => 'Demande annulée',
         ]);
     }
-} 
+}

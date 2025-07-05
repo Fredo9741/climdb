@@ -11,7 +11,7 @@ class Equipement extends Model
 
     protected $fillable = [
         'site_id', 'modele_id', 'numero_serie', 'nom', 'description',
-        'date_installation', 'date_derniere_maintenance', 'localisation_precise', 'etat'
+        'date_installation', 'date_derniere_maintenance', 'localisation_precise', 'etat',
     ];
 
     // --- Relations ---

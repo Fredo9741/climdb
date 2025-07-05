@@ -10,7 +10,7 @@ class Site extends Model
     use HasFactory;
 
     protected $fillable = [
-        'client_id', 'nom', 'adresse', 'ville', 'code_postal', 'pays', 'latitude', 'longitude'
+        'client_id', 'nom', 'adresse', 'ville', 'code_postal', 'pays', 'latitude', 'longitude',
     ];
 
     // --- Relations ---

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class MaintenanceProgrammee extends Model
 {
     protected $table = 'maintenances_programmees';
-    
+
     protected $fillable = [
         'equipement_id',
         'type_maintenance',
@@ -17,13 +17,13 @@ class MaintenanceProgrammee extends Model
         'derniere_maintenance',
         'description',
         'statut',
-        'cout_estime'
+        'cout_estime',
     ];
 
     protected $casts = [
         'prochaine_maintenance' => 'date',
         'derniere_maintenance' => 'date',
-        'cout_estime' => 'decimal:2'
+        'cout_estime' => 'decimal:2',
     ];
 
     /**
