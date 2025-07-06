@@ -165,8 +165,11 @@ final class TechnicienController extends Controller
                     return [
                         'id' => $affectation->id,
                         'vehicule' => $affectation->vehicule->marque . ' ' . $affectation->vehicule->modele,
+                        'immatriculation' => $affectation->vehicule->immatriculation,
                         'date_debut' => $affectation->date_debut,
                         'date_fin' => $affectation->date_fin,
+                        'motif' => $affectation->motif,
+                        'active' => $affectation->isActive(),
                     ];
                 }),
                 'stats' => [
@@ -189,8 +192,9 @@ final class TechnicienController extends Controller
             abort(404);
         }
 
-        $technicien->load('userHabilitations.habilitation');
+        $technicien->load(['userHabilitations.habilitation', 'affectationsVehicules.vehicule']);
         $habilitations = Habilitation::actives()->orderBy('nom')->get();
+        $vehicules = \App\Models\Vehicule::actifs()->orderBy('marque')->orderBy('modele')->get();
 
         return Inertia::render('admin/techniciens/Edit', [
             'technicien' => [
@@ -210,8 +214,20 @@ final class TechnicienController extends Controller
                         'commentaires' => $userHabilitation->commentaires,
                     ];
                 }),
+                'affectations_vehicules' => $technicien->affectationsVehicules->map(function ($affectation) {
+                    return [
+                        'id' => $affectation->id,
+                        'vehicule_id' => $affectation->vehicule_id,
+                        'vehicule_nom' => $affectation->vehicule->marque . ' ' . $affectation->vehicule->modele,
+                        'immatriculation' => $affectation->vehicule->immatriculation,
+                        'date_debut' => $affectation->date_debut,
+                        'date_fin' => $affectation->date_fin,
+                        'motif' => $affectation->motif,
+                    ];
+                }),
             ],
             'habilitations' => $habilitations,
+            'vehicules' => $vehicules,
         ]);
     }
 
@@ -236,6 +252,11 @@ final class TechnicienController extends Controller
             'habilitations.*.date_obtention' => 'required|date',
             'habilitations.*.numero_certificat' => 'nullable|string|max:100',
             'habilitations.*.commentaires' => 'nullable|string',
+            'affectations_vehicules' => 'array',
+            'affectations_vehicules.*.vehicule_id' => 'required|exists:vehicules,id',
+            'affectations_vehicules.*.date_debut' => 'required|date',
+            'affectations_vehicules.*.date_fin' => 'nullable|date|after:affectations_vehicules.*.date_debut',
+            'affectations_vehicules.*.motif' => 'nullable|string|max:255',
         ]);
 
         // Mettre à jour les informations de base
@@ -271,6 +292,25 @@ final class TechnicienController extends Controller
                     'commentaires' => $habilitationData['commentaires'] ?? null,
                     'actif' => true,
                 ]);
+            }
+        }
+
+        // Mettre à jour les affectations de véhicules
+        if (isset($validated['affectations_vehicules'])) {
+            // Supprimer toutes les affectations existantes
+            $technicien->affectationsVehicules()->delete();
+
+            // Ajouter les nouvelles affectations
+            foreach ($validated['affectations_vehicules'] as $affectationData) {
+                $vehicule = \App\Models\Vehicule::find($affectationData['vehicule_id']);
+                if ($vehicule) {
+                    $technicien->affectationsVehicules()->create([
+                        'vehicule_id' => $affectationData['vehicule_id'],
+                        'date_debut' => $affectationData['date_debut'],
+                        'date_fin' => $affectationData['date_fin'] ?? null,
+                        'motif' => $affectationData['motif'] ?? null,
+                    ]);
+                }
             }
         }
 
