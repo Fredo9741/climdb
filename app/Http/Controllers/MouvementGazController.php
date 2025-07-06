@@ -35,7 +35,7 @@ class MouvementGazController extends Controller
     {
         $equipements = Equipement::with('site.client')->get();
         $typesGaz = TypeGaz::all();
-        $interventions = Intervention::with('site')->latest()->get();
+        $interventions = Intervention::with(['panne.equipement.site'])->latest()->get();
         $techniciens = User::role('technicien')->get();
 
         return Inertia::render('mouvements-gaz/Create', [
@@ -92,7 +92,7 @@ class MouvementGazController extends Controller
     {
         $equipements = Equipement::with('site.client')->get();
         $typesGaz = TypeGaz::all();
-        $interventions = Intervention::with('site')->latest()->get();
+        $interventions = Intervention::with(['panne.equipement.site'])->latest()->get();
         $techniciens = User::role('technicien')->get();
 
         return Inertia::render('mouvements-gaz/Edit', [

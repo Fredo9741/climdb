@@ -13,8 +13,8 @@ class Devis extends Model
         'client_id',
         'site_id',
         'numero',
-        'date_creation',
-        'date_validite',
+        'date_devis',
+        'date_expiration',
         'montant_ht',
         'montant_ttc',
         'tva',
@@ -24,8 +24,8 @@ class Devis extends Model
     ];
 
     protected $casts = [
-        'date_creation' => 'date',
-        'date_validite' => 'date',
+        'date_devis' => 'date',
+        'date_expiration' => 'date',
         'montant_ht' => 'decimal:2',
         'montant_ttc' => 'decimal:2',
         'tva' => 'decimal:2',
@@ -74,7 +74,7 @@ class Devis extends Model
      */
     public function scopeActifs($query)
     {
-        return $query->where('date_validite', '>=', now());
+        return $query->where('date_expiration', '>=', now());
     }
 
     /**
@@ -92,7 +92,7 @@ class Devis extends Model
      */
     public function getIsExpiredAttribute()
     {
-        return $this->date_validite < now();
+        return $this->date_expiration < now();
     }
 
     /**

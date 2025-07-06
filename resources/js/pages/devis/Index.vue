@@ -52,9 +52,12 @@
                       <Link :href="route('devis.show', devis.id)" class="text-blue-600 hover:text-blue-900 mr-2">
                         Voir
                       </Link>
-                      <Link :href="route('devis.edit', devis.id)" class="text-indigo-600 hover:text-indigo-900">
+                      <Link :href="route('devis.edit', devis.id)" class="text-indigo-600 hover:text-indigo-900 mr-2">
                         Modifier
                       </Link>
+                      <button @click="deleteDevis(devis)" class="text-red-600 hover:text-red-900">
+                        Supprimer
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -70,6 +73,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
+import { router } from '@inertiajs/vue3'
 
 defineProps<{
   devis: Array<{
@@ -82,7 +86,11 @@ defineProps<{
 }>()
 
 const formatDate = (date: string) => {
-  return new Date(date).toLocaleDateString('fr-FR')
+  if (!date) return 'N/A'
+  // S'assurer qu'on passe un ISO complet pour éviter Invalid Date
+  const parsed = new Date(date.includes('T') ? date : `${date}T00:00:00`)
+  if (isNaN(parsed.getTime())) return 'N/A'
+  return parsed.toLocaleDateString('fr-FR')
 }
 
 const formatCurrency = (amount: number) => {
@@ -90,5 +98,11 @@ const formatCurrency = (amount: number) => {
     style: 'currency',
     currency: 'EUR'
   }).format(amount)
+}
+
+const deleteDevis = (devis) => {
+  if (confirm(`Supprimer le devis ${devis.numero} ?`)) {
+    router.delete(route('devis.destroy', devis.id))
+  }
 }
 </script>
