@@ -8,6 +8,7 @@ use App\Rules\NoOverlappingAffectation;
 test('no overlapping affectations for a vehicle', function () {
     // Désactiver les contraintes pour l'environnement sqlite
     \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+    \Illuminate\Support\Facades\DB::statement('PRAGMA foreign_keys = OFF');
 
     // Créer un utilisateur et un véhicule factices
     App\Models\User::factory()->create(['id' => 1, 'email' => 'test@example.com']);

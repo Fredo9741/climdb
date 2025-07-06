@@ -9,6 +9,9 @@ test('a releve_mesure record can be persisted with minimal valid data', function
     // Désactiver les contraintes pour simplifier la création des FK inexistantes (environnement de test).
     Schema::disableForeignKeyConstraints();
 
+    // Pour SQLite :
+    Illuminate\Support\Facades\DB::statement('PRAGMA foreign_keys = OFF');
+
     // Créer un utilisateur et un équipement factices
     App\Models\User::factory()->create(['id' => 1, 'email' => 'user@example.com']);
     App\Models\Equipement::create([
