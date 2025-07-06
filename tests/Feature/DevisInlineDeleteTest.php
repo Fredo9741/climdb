@@ -17,8 +17,8 @@ test('inline deletion removes devis from database', function () {
     $devis = Devis::factory()->create([
         'client_id' => $client->id,
         'numero' => 'DEV-TEST',
-        'date_devis' => today(),
-        'date_expiration' => today()->addDays(30),
+        'date_creation' => today(),
+        'date_validite' => today()->addDays(30),
     ]);
 
     delete(route('devis.destroy', $devis))->assertRedirect('/devis');
