@@ -12,18 +12,20 @@ class ReleveMesure extends Model
     protected $table = 'releves_mesures';
 
     protected $fillable = [
+        'intervention_id',
         'equipement_id',
-        'modele_releve_id',
         'user_id',
-        'date_releve',
-        'valeurs',
-        'observations',
-        'statut',
+        'type_mesure',
+        'valeur',
+        'unite',
+        'date_mesure',
+        'emplacement_mesure',
+        'commentaire',
     ];
 
     protected $casts = [
-        'date_releve' => 'datetime',
-        'valeurs' => 'array',
+        'date_mesure' => 'datetime',
+        'valeur' => 'float',
     ];
 
     // --- Relations ---

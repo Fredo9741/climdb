@@ -206,7 +206,7 @@
                 Marquer comme résolue
               </Button>
               <Button 
-                @click="router.visit(route('interventions.create', { panne_id: panne.id }))"
+                @click="router.visit(`${route('interventions.create')}?panne_id=${panne.id}`)"
                 variant="outline"
               >
                 <Icon name="Plus" class="h-4 w-4 mr-2" />

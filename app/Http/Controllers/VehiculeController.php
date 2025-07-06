@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Rules\NoOverlappingAffectation;
 
 class VehiculeController extends Controller
 {
@@ -60,7 +61,7 @@ class VehiculeController extends Controller
             'notes' => 'nullable|string|max:1000',
             'affectations' => 'nullable|array',
             'affectations.*.user_id' => 'required|exists:users,id',
-            'affectations.*.date_debut' => 'required|date',
+            'affectations.*.date_debut' => ['required','date', new NoOverlappingAffectation(0)], // vehicule id 0 placeholder will be replaced later
             'affectations.*.motif' => 'required|string|max:255',
         ]);
 
@@ -139,7 +140,7 @@ class VehiculeController extends Controller
             'affectations' => 'nullable|array',
             'affectations.*.id' => 'nullable|exists:affectations_vehicules,id',
             'affectations.*.user_id' => 'required|exists:users,id',
-            'affectations.*.date_debut' => 'required|date',
+            'affectations.*.date_debut' => ['required','date', new NoOverlappingAffectation($vehicule->id)],
             'affectations.*.date_fin' => 'nullable|date|after:affectations.*.date_debut',
             'affectations.*.motif' => 'required|string|max:255',
             'affectations_to_delete' => 'nullable|array',

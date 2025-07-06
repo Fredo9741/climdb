@@ -73,7 +73,7 @@
               <div class="flex justify-between items-center mb-4">
                 <h3 class="text-lg font-semibold text-gray-800">Sites associés</h3>
                 <Link
-                  :href="route('sites.create', { client_id: client.id })"
+                  :href="`${route('sites.create')}?client_id=${client.id}`"
                   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm"
                 >
                   Ajouter un site
@@ -111,7 +111,7 @@
               <div v-else class="text-center py-8 bg-gray-50 rounded-lg">
                 <p class="text-gray-500">Aucun site associé à ce client</p>
                 <Link
-                  :href="route('sites.create', { client_id: client.id })"
+                  :href="`${route('sites.create')}?client_id=${client.id}`"
                   class="mt-2 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 >
                   Créer le premier site

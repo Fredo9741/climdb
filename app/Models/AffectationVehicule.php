@@ -17,7 +17,6 @@ class AffectationVehicule extends Model
         'date_debut',
         'date_fin',
         'motif',
-        'observations',
     ];
 
     protected $casts = [
