@@ -13,10 +13,10 @@ test('a releve_mesure record can be persisted with minimal valid data', function
     App\Models\User::factory()->create(['id' => 1, 'email' => 'user@example.com']);
     App\Models\Equipement::create([
         'id' => 1,
+        'numero_serie' => 'SN-001',
         'nom' => 'Pompe test',
         'site_id' => 1,
         'modele_id' => 1,
-        'type_gaz_id' => 1,
     ]);
 
     $data = [

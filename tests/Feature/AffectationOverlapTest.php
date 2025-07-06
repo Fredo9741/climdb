@@ -8,6 +8,20 @@ use App\Rules\NoOverlappingAffectation;
 test('no overlapping affectations for a vehicle', function () {
     // Désactiver les contraintes pour l'environnement sqlite
     \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
+
+    // Créer un utilisateur et un véhicule factices
+    App\Models\User::factory()->create(['id' => 1, 'email' => 'test@example.com']);
+    App\Models\Vehicule::create([
+        'id' => 1,
+        'marque' => 'Renault',
+        'modele' => 'Kangoo',
+        'immatriculation' => 'AA-123-AA',
+        'annee_fabrication' => 2020,
+        'kilometrage_actuel' => 0,
+        'type_carburant' => 'Diesel',
+        'date_acquisition' => now(),
+        'statut_vehicule_id' => 1,
+    ]);
     // Créons un véhicule 1 et deux affectations qui se chevauchent
     $vehiculeId = 1;
 
@@ -18,8 +32,6 @@ test('no overlapping affectations for a vehicle', function () {
         'date_fin'    => '2025-07-10 00:00:00',
         'motif'       => 'Test',
     ]);
-
-    \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
     $rule = new NoOverlappingAffectation($vehiculeId);
 

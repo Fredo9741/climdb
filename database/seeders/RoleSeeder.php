@@ -15,10 +15,7 @@ class RoleSeeder extends Seeder
         // On utilise firstOrCreate pour éviter les exceptions en cas de rôle déjà présent (tests parallèles)
 
         foreach (['admin', 'technicien', 'client', 'manager'] as $roleName) {
-            Role::firstOrCreate([
-                'name'       => $roleName,
-                'guard_name' => 'web',
-            ]);
+            Role::findOrCreate($roleName, 'web');
         }
     }
 }
