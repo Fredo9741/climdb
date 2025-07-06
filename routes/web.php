@@ -11,6 +11,7 @@ use App\Http\Controllers\ModeleController;
 use App\Http\Controllers\ModeleReleveController;
 use App\Http\Controllers\MouvementGazController;
 use App\Http\Controllers\PanneController;
+use App\Http\Controllers\ReleveMesureController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\VehiculeController;
 use Illuminate\Foundation\Application;
@@ -68,6 +69,9 @@ Route::resource('pannes', PanneController::class)->middleware(['auth', 'verified
 
 // Routes pour les interventions
 Route::resource('interventions', InterventionController::class)->middleware(['auth', 'verified']);
+
+// Routes pour les relevés de mesures
+Route::resource('releves-mesures', ReleveMesureController::class)->middleware(['auth', 'verified'])->except(['edit', 'update']);
 
 // Routes pour les devis (avec paramètre explicite)
 Route::get('devis', [DevisController::class, 'index'])->name('devis.index')->middleware(['auth', 'verified']);
