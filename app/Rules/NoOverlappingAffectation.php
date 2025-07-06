@@ -40,7 +40,7 @@ class NoOverlappingAffectation implements Rule, DataAwareRule
             ->where(function ($q) use ($start, $end) {
                 $q->where(function ($q2) use ($start, $end) {
                     $q2->where('date_debut', '<=', $start)
-                        ->where(function ($q3) use ($end) {
+                        ->where(function ($q3) use ($start, $end) {
                             $q3->whereNull('date_fin')
                                 ->orWhere('date_fin', '>=', $start);
                         });
@@ -48,7 +48,7 @@ class NoOverlappingAffectation implements Rule, DataAwareRule
                 if ($end) {
                     $q->orWhere(function ($q2) use ($start, $end) {
                         $q2->where('date_debut', '<=', $end)
-                            ->where(function ($q3) use ($end) {
+                            ->where(function ($q3) use ($start, $end) {
                                 $q3->whereNull('date_fin')
                                     ->orWhere('date_fin', '>=', $end);
                             });
