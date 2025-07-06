@@ -47,7 +47,13 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         // Attribuer le rôle technicien par défaut après connexion
-        $user->assignRole('technicien');
+        /** @var \Spatie\Permission\Models\Role $role */
+        $role = \Spatie\Permission\Models\Role::firstOrCreate([
+            'name' => 'technicien',
+            'guard_name' => 'web',
+        ]);
+
+        $user->assignRole($role);
 
         return to_route('dashboard');
     }

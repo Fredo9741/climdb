@@ -14,6 +14,7 @@ class Vehicule extends Model
         'modele',
         'immatriculation',
         'annee_fabrication',
+        'kilometrage_actuel',
         'type_carburant',
         'date_acquisition',
         'statut_vehicule_id',
@@ -23,6 +24,7 @@ class Vehicule extends Model
     protected $casts = [
         'date_acquisition' => 'date',
         'annee_fabrication' => 'integer',
+        'kilometrage_actuel' => 'integer',
     ];
 
     // --- Relations ---
@@ -123,8 +125,8 @@ class Vehicule extends Model
     public function getProchainEntretienKmAttribute()
     {
         // Logique basique : entretien tous les 10 000 km
-        // Note: kilometrage_actuel n'existe pas dans la table, utiliser la relation suivisKilometrage
-        $dernierKm = $this->suivisKilometrage()->latest('date_releve')->value('kilometrage_actuel') ?? 0;
+        // On utilise le kilométrage actuel saisi ou, si non disponible, le dernier relevé enregistré.
+        $dernierKm = $this->kilometrage_actuel ?? $this->suivisKilometrage()->latest('date_releve')->value('kilometrage_actuel') ?? 0;
         return ceil($dernierKm / 10000) * 10000;
     }
 }
