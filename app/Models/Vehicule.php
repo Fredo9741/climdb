@@ -42,7 +42,23 @@ class Vehicule extends Model
      */
     public function affectations()
     {
-        return $this->hasMany(AffectationVehicule::class);
+        // Les affectations les plus récentes (date_debut la plus proche) en premier
+        return $this->hasMany(AffectationVehicule::class)->orderByDesc('date_debut');
+    }
+
+    /**
+     * Affectation active (en cours) du véhicule.
+     * Retourne la dernière affectation sans date de fin ou dont la date de fin est dans le futur.
+     */
+    public function affectationActive()
+    {
+        return $this->hasOne(AffectationVehicule::class)
+            ->where('date_debut', '<=', now())
+            ->where(function ($q) {
+                $q->whereNull('date_fin')
+                  ->orWhere('date_fin', '>=', now());
+            })
+            ->orderByDesc('date_debut');
     }
 
     /**

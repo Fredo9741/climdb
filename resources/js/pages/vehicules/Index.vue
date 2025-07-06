@@ -96,8 +96,8 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        <div v-if="vehicule.affectations?.length > 0">
-                                            {{ vehicule.affectations[0].user?.name || 'Non assigné' }}
+                                        <div v-if="activeAffectation(vehicule)">
+                                            {{ activeAffectation(vehicule).user?.name || 'Non assigné' }}
                                         </div>
                                         <div v-else class="text-gray-500">Non assigné</div>
                                     </td>
@@ -197,5 +197,25 @@ const deleteVehicule = (vehicule) => {
     if (confirm(`Êtes-vous sûr de vouloir supprimer le véhicule ${vehicule.marque} ${vehicule.modele} ?`)) {
         router.delete(route('vehicules.destroy', vehicule.id))
     }
+}
+
+/**
+ * Retourne l'affectation active (en cours) du véhicule ou null.
+ */
+const activeAffectation = (vehicule) => {
+    if (!vehicule.affectations || vehicule.affectations.length === 0) {
+        return null
+    }
+
+    const now = new Date()
+    // On cherche une affectation dont la date_debut est passée et la date_fin dans le futur ou nulle.
+    const active = vehicule.affectations.find((a) => {
+        const debut = new Date(a.date_debut)
+        const fin = a.date_fin ? new Date(a.date_fin) : null
+        return debut <= now && (!fin || fin >= now)
+    })
+
+    // Si aucune affectation courante, on retourne la plus récente (première) pour info.
+    return active || vehicule.affectations[0]
 }
 </script>
