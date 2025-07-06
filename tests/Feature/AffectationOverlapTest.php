@@ -6,6 +6,8 @@ use App\Rules\NoOverlappingAffectation;
 // Test de la règle d'interdiction de chevauchement des affectations
 
 test('no overlapping affectations for a vehicle', function () {
+    // Désactiver les contraintes pour l'environnement sqlite
+    \Illuminate\Support\Facades\Schema::disableForeignKeyConstraints();
     // Créons un véhicule 1 et deux affectations qui se chevauchent
     $vehiculeId = 1;
 
@@ -16,6 +18,8 @@ test('no overlapping affectations for a vehicle', function () {
         'date_fin'    => '2025-07-10 00:00:00',
         'motif'       => 'Test',
     ]);
+
+    \Illuminate\Support\Facades\Schema::enableForeignKeyConstraints();
 
     $rule = new NoOverlappingAffectation($vehiculeId);
 
