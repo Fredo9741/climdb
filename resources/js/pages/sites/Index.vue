@@ -13,6 +13,23 @@
                 Nouveau Site
               </Link>
             </div>
+            <!-- Barre de recherche -->
+            <div class="mb-6 max-w-md">
+              <label for="search" class="block text-sm font-medium text-gray-700 mb-2">Recherche</label>
+              <div class="relative">
+                <input
+                  id="search"
+                  v-model="searchTerm"
+                  type="text"
+                  placeholder="Nom du site, client, ville..."
+                  class="block w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                />
+                <button v-if="searchTerm" @click="searchTerm = ''" class="absolute inset-y-0 right-0 px-3 text-gray-400 hover:text-gray-600">
+                  ×
+                </button>
+              </div>
+            </div>
+
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -32,7 +49,7 @@
                   </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                  <tr v-for="site in sites" :key="site.id" class="hover:bg-gray-50 transition-colors cursor-pointer" @click="router.visit(route('sites.show', site.id))">
+                  <tr v-for="site in filteredSites" :key="site.id" class="hover:bg-gray-50 transition-colors cursor-pointer" @click="router.visit(route('sites.show', site.id))">
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm font-medium text-gray-900">{{ site.nom }}</div>
                     </td>
@@ -68,6 +85,7 @@
 
 <script setup lang="ts">
 import { Link, router } from '@inertiajs/vue3'
+import { ref, computed } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Icon from '@/components/Icon.vue'
@@ -80,6 +98,17 @@ defineProps<{
     client?: { nom: string }
   }>
 }>()
+
+const searchTerm = ref('')
+
+const filteredSites = computed(() => {
+  return props.sites.filter(site => {
+    const matchesNom = site.nom.toLowerCase().includes(searchTerm.value.toLowerCase())
+    const matchesClient = site.client?.nom ? site.client.nom.toLowerCase().includes(searchTerm.value.toLowerCase()) : false
+    const matchesVille = site.ville.toLowerCase().includes(searchTerm.value.toLowerCase())
+    return matchesNom || matchesClient || matchesVille
+  })
+})
 
 const deleteSite = (site: any) => {
   if (confirm(`Êtes-vous sûr de vouloir supprimer le site "${site.nom}" ?`)) {

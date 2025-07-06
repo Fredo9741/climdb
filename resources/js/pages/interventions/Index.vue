@@ -9,7 +9,7 @@
           </p>
         </div>
         <div class="flex gap-2">
-          <Button @click="router.visit('/interventions/create')" v-if="canCreate">
+          <Button @click="router.visit('/interventions/create')">
             <Icon name="Plus" class="h-4 w-4 mr-2" />
             <span class="hidden sm:inline">Nouvelle</span> intervention
           </Button>

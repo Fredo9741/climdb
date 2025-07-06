@@ -19,6 +19,14 @@
             <Icon name="Plus" class="w-4 h-4" />
             Nouveau Modèle
           </Button>
+          <Button 
+            @click="$inertia.visit(route('releves-mesures.create'))"
+            variant="secondary"
+            class="flex items-center gap-2"
+          >
+            <Icon name="FilePlus" class="w-4 h-4" />
+            Nouveau Relevé
+          </Button>
         </div>
       </div>
     </template>
