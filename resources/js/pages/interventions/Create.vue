@@ -269,7 +269,7 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
-import { useForm } from '@inertiajs/vue3'
+import { useForm, usePage } from '@inertiajs/vue3'
 
 interface Equipement {
   id: number
@@ -288,7 +288,13 @@ const props = defineProps<{
   techniciens: Technicien[]
 }>()
 
+// Récupérer le paramètre panne_id depuis l'URL
+const page = usePage()
+const urlParams = new URLSearchParams(window.location.search)
+const panneId = urlParams.get('panne_id')
+
 const form = useForm({
+  panne_id: panneId || '',
   date_intervention: '',
   type_intervention: '',
   equipement_id: '',

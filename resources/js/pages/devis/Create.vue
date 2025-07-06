@@ -18,7 +18,7 @@
                   >
                     <option value="">Sélectionner un client</option>
                     <option v-for="client in clients" :key="client.id" :value="client.id">
-                      {{ client.nom_entreprise || client.nom }}
+                                              {{ client.nom }}
                     </option>
                   </select>
                 </div>
@@ -39,14 +39,14 @@
               </div>
 
               <div>
-                <label for="objet" class="block text-sm font-medium text-gray-700">Objet du devis</label>
+                <label for="numero" class="block text-sm font-medium text-gray-700">Numéro de devis</label>
                 <input 
                   type="text" 
-                  id="objet" 
-                  v-model="form.objet" 
+                  id="numero" 
+                  v-model="form.numero" 
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   required
-                  placeholder="Ex: Maintenance annuelle climatisation"
+                  placeholder="Ex: DEV-2024-001"
                 />
               </div>
 
@@ -76,10 +76,10 @@
                 </div>
 
                 <div>
-                  <label for="taux_tva" class="block text-sm font-medium text-gray-700">Taux TVA (%)</label>
+                  <label for="tva" class="block text-sm font-medium text-gray-700">Taux TVA (%)</label>
                   <select 
-                    id="taux_tva" 
-                    v-model="form.taux_tva" 
+                    id="tva" 
+                    v-model="form.tva" 
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   >
                     <option value="20">20%</option>
@@ -103,11 +103,11 @@
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label for="date_emission" class="block text-sm font-medium text-gray-700">Date d'émission</label>
+                  <label for="date_creation" class="block text-sm font-medium text-gray-700">Date de création</label>
                   <input 
                     type="date" 
-                    id="date_emission" 
-                    v-model="form.date_emission" 
+                    id="date_creation" 
+                    v-model="form.date_creation" 
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                     required
                   />
@@ -126,10 +126,10 @@
               </div>
 
               <div>
-                <label for="conditions" class="block text-sm font-medium text-gray-700">Conditions particulières</label>
+                <label for="conditions_paiement" class="block text-sm font-medium text-gray-700">Conditions de paiement</label>
                 <textarea 
-                  id="conditions" 
-                  v-model="form.conditions" 
+                  id="conditions_paiement" 
+                  v-model="form.conditions_paiement" 
                   rows="3"
                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   placeholder="Conditions de paiement, délais, garanties..."
@@ -172,23 +172,27 @@ defineProps<{
 const form = useForm({
   client_id: '',
   site_id: '',
-  objet: '',
-  description: '',
-  montant_ht: 0,
-  taux_tva: 20,
-  date_emission: new Date().toISOString().split('T')[0],
+  numero: '',
+  date_creation: new Date().toISOString().split('T')[0],
   date_validite: '',
-  conditions: ''
+  montant_ht: 0,
+  tva: 20,
+  montant_ttc: 0,
+  statut: 'brouillon',
+  description: '',
+  conditions_paiement: ''
 })
 
 const calculateTTC = () => {
-  const ht = parseFloat(form.montant_ht) || 0
-  const tva = parseFloat(form.taux_tva) || 0
+  const ht = parseFloat(form.montant_ht.toString()) || 0
+  const tva = parseFloat(form.tva.toString()) || 0
   const ttc = ht * (1 + tva / 100)
   return ttc.toFixed(2)
 }
 
 const submit = () => {
+  // Calculer le montant TTC avant l'envoi
+  form.montant_ttc = parseFloat(calculateTTC())
   form.post(route('devis.store'))
 }
 </script> 

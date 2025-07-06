@@ -177,7 +177,7 @@ final class TestData extends Command
 
         foreach ($clients->take(3) as $client) {
             $sitesCount = $client->sites()->count();
-            $clientName = $client->nom_entreprise ?: $client->nom;
+            $clientName = $client->nom;
             $this->line("      - {$clientName} ({$sitesCount} sites)");
         }
     }
@@ -190,7 +190,7 @@ final class TestData extends Command
 
         foreach ($sites->take(3) as $site) {
             $equipementsCount = $site->equipements()->count();
-            $clientName = $site->client->nom_entreprise ?: $site->client->nom;
+            $clientName = $site->client->nom;
             $this->line("      - {$site->nom} - {$clientName} ({$equipementsCount} équipements)");
         }
     }
@@ -236,7 +236,7 @@ final class TestData extends Command
         $this->line("      - {$devis->count()} devis en base");
 
         foreach ($devis->take(3) as $dev) {
-            $clientName = $dev->client->nom_entreprise ?: $dev->client->nom;
+            $clientName = $dev->client->nom;
             $this->line("      - {$dev->numero_devis} - {$clientName} ({$dev->statut}) - {$dev->montant_ttc}€");
         }
     }
@@ -248,7 +248,7 @@ final class TestData extends Command
         $this->line("      - {$factures->count()} factures en base");
 
         foreach ($factures->take(3) as $facture) {
-            $clientName = $facture->client->nom_entreprise ?: $facture->client->nom;
+            $clientName = $facture->client->nom;
             $this->line("      - {$facture->numero_facture} - {$clientName} ({$facture->statut}) - {$facture->montant_ttc}€");
         }
     }

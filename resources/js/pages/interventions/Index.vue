@@ -241,7 +241,7 @@
                   <td class="px-6 py-4">
                     <div class="text-sm font-medium text-gray-900 dark:text-white">{{ intervention.description }}</div>
                     <div class="text-sm text-gray-500 dark:text-gray-400" v-if="intervention.panne">
-                      Panne: {{ intervention.panne.titre }}
+                                              Panne: {{ intervention.panne.description_panne }}
                     </div>
                   </td>
                   <td class="px-6 py-4">

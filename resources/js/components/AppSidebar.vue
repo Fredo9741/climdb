@@ -19,7 +19,8 @@ import {
     Package,
     Car,
     Cylinder,
-    ArrowUpDown
+    ArrowUpDown,
+    UserCheck
 } from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
@@ -140,6 +141,11 @@ const mainNavItems = computed((): NavItem[] => {
                 title: 'Factures',
                 href: '/factures',
                 icon: Receipt,
+            },
+            {
+                title: 'Techniciens',
+                href: '/admin/techniciens',
+                icon: UserCheck,
             }
         );
     }

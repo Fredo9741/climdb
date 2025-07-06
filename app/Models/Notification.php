@@ -13,15 +13,13 @@ class Notification extends Model
         'user_id',
         'titre',
         'message',
-        'type',
-        'lu',
-        'date_lecture',
-        'action_url',
+        'type_notification',
+        'lien_associe',
+        'read_at',
     ];
 
     protected $casts = [
-        'lu' => 'boolean',
-        'date_lecture' => 'datetime',
+        'read_at' => 'datetime',
     ];
 
     // --- Relations ---
@@ -41,7 +39,7 @@ class Notification extends Model
      */
     public function scopeNonLues($query)
     {
-        return $query->where('lu', false);
+        return $query->whereNull('read_at');
     }
 
     /**
@@ -49,7 +47,7 @@ class Notification extends Model
      */
     public function scopeParType($query, $type)
     {
-        return $query->where('type', $type);
+        return $query->where('type_notification', $type);
     }
 
     // --- Méthodes ---
@@ -60,8 +58,7 @@ class Notification extends Model
     public function marquerCommeLue()
     {
         $this->update([
-            'lu' => true,
-            'date_lecture' => now(),
+            'read_at' => now(),
         ]);
     }
 }

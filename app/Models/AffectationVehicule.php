@@ -9,6 +9,8 @@ class AffectationVehicule extends Model
 {
     use HasFactory;
 
+    protected $table = 'affectations_vehicules';
+
     protected $fillable = [
         'vehicule_id',
         'user_id',

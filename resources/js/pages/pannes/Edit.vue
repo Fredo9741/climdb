@@ -55,7 +55,7 @@
                     :key="equipement.id" 
                     :value="equipement.id"
                   >
-                    {{ equipement.nom }} - {{ equipement.site?.nom }} ({{ equipement.site?.client?.nom_entreprise || equipement.site?.client?.nom }})
+                                            {{ equipement.nom }} - {{ equipement.site?.nom }} ({{ equipement.site?.client?.nom }})
                   </option>
                 </select>
                 <InputError v-if="form.errors.equipement_id" :message="form.errors.equipement_id" />

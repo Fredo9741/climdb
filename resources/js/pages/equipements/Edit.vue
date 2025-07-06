@@ -18,7 +18,7 @@
                   >
                     <option value="">Sélectionner un site</option>
                     <option v-for="site in sites" :key="site.id" :value="site.id">
-                      {{ site.nom }} ({{ site.client?.nom_entreprise || site.client?.nom }})
+                                              {{ site.nom }} ({{ site.client?.nom }})
                     </option>
                   </select>
                 </div>

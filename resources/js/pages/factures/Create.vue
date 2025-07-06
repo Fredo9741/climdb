@@ -28,15 +28,15 @@
                       Numéro de facture *
                     </label>
                     <input
-                      id="numero"
-                      v-model="form.numero"
+                      id="numero_facture"
+                      v-model="form.numero_facture"
                       type="text"
                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                       placeholder="Ex: FAC-2024-001"
                       required
                     />
-                    <div v-if="form.errors.numero" class="mt-1 text-sm text-red-600">
-                      {{ form.errors.numero }}
+                    <div v-if="form.errors.numero_facture" class="mt-1 text-sm text-red-600">
+                      {{ form.errors.numero_facture }}
                     </div>
                   </div>
 
@@ -404,14 +404,13 @@ const props = defineProps<{
 const selectedClient = ref<Client | null>(null)
 
 const form = useForm({
-  numero: '',
+  numero_facture: '',
   date_facture: new Date().toISOString().split('T')[0],
   date_echeance: '',
   client_id: '',
-  type_facturation: 'intervention',
-  notes: '',
+  description: '',
+  statut: 'emise',
   conditions_paiement: '30_jours',
-  statut_paiement: 'en_attente',
   lignes: [
     {
       description: '',

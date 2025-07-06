@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Client;
 use App\Models\Devis;
 use App\Models\Facture;
-use App\Models\Intervention;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,7 +20,6 @@ class FactureController extends Controller
         $factures = Facture::with([
             'client',
             'devis',
-            'interventions',
         ])->latest()->get();
 
         return Inertia::render('factures/Index', [
@@ -36,12 +34,10 @@ class FactureController extends Controller
     {
         $clients = Client::all();
         $devis = Devis::where('statut', 'accepte')->get();
-        $interventions = Intervention::where('statut', 'terminee')->get();
 
         return Inertia::render('factures/Create', [
             'clients' => $clients,
             'devis' => $devis,
-            'interventions' => $interventions,
         ]);
     }
 
@@ -60,25 +56,9 @@ class FactureController extends Controller
             'montant_ttc' => 'required|numeric|min:0',
             'statut' => 'required|in:brouillon,emise,payee,en_retard,annulee',
             'description' => 'required|string',
-            'interventions' => 'nullable|array',
-            'interventions.*.intervention_id' => 'required|exists:interventions,id',
-            'interventions.*.prix_unitaire' => 'required|numeric|min:0',
-            'interventions.*.quantite' => 'required|integer|min:1',
-            'interventions.*.description' => 'nullable|string',
         ]);
 
         $facture = Facture::create($validated);
-
-        // Attacher les interventions si fournies
-        if (isset($validated['interventions'])) {
-            foreach ($validated['interventions'] as $intervention) {
-                $facture->interventions()->attach($intervention['intervention_id'], [
-                    'prix_unitaire' => $intervention['prix_unitaire'],
-                    'quantite' => $intervention['quantite'],
-                    'description' => $intervention['description'] ?? null,
-                ]);
-            }
-        }
 
         return redirect()->route('factures.index')
             ->with('success', 'Facture créée avec succès !');
@@ -92,7 +72,6 @@ class FactureController extends Controller
         $facture->load([
             'client',
             'devis',
-            'interventions.equipement.site',
         ]);
 
         return Inertia::render('factures/Show', [
@@ -107,13 +86,11 @@ class FactureController extends Controller
     {
         $clients = Client::all();
         $devis = Devis::where('statut', 'accepte')->get();
-        $interventions = Intervention::where('statut', 'terminee')->get();
 
         return Inertia::render('factures/Edit', [
             'facture' => $facture,
             'clients' => $clients,
             'devis' => $devis,
-            'interventions' => $interventions,
         ]);
     }
 

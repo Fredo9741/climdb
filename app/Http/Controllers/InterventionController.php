@@ -26,8 +26,21 @@ class InterventionController extends Controller
             'maintenanceProgrammee',
         ])->latest('date_planifiee')->get();
 
+        // Ajouter les données extraites du rapport pour chaque intervention
+        $interventionsWithDetails = $interventions->map(function ($intervention) {
+            // Transformer l'intervention en array pour préserver les relations
+            $interventionArray = $intervention->toArray();
+            
+            // Ajouter les données extraites du rapport
+            $interventionArray['type_intervention'] = $this->extractTypeFromRapport($intervention->rapport);
+            $interventionArray['description'] = $this->extractDescriptionFromRapport($intervention->rapport);
+            $interventionArray['resultat'] = $this->determineResultat($intervention);
+            
+            return $interventionArray;
+        });
+
         return Inertia::render('interventions/Index', [
-            'interventions' => $interventions,
+            'interventions' => $interventionsWithDetails,
         ]);
     }
 
@@ -68,7 +81,7 @@ class InterventionController extends Controller
 
         // Mapper les champs du formulaire aux colonnes de la table
         $interventionData = [
-            'panne_id' => $validated['panne_id'],
+            'panne_id' => $validated['panne_id'] ?? null,
             'technicien_id' => $validated['technicien_id'],
             'date_planifiee' => $validated['date_intervention'],
             'statut' => $validated['statut'],
@@ -179,7 +192,7 @@ class InterventionController extends Controller
 
         // Mapper les champs du formulaire aux colonnes de la table (même logique que store)
         $interventionData = [
-            'panne_id' => $validated['panne_id'],
+            'panne_id' => $validated['panne_id'] ?? null,
             'technicien_id' => $validated['technicien_id'],
             'date_planifiee' => $validated['date_intervention'],
             'statut' => $validated['statut'],
@@ -294,5 +307,26 @@ class InterventionController extends Controller
         }
 
         return '';
+    }
+
+    /**
+     * Déterminer le résultat d'une intervention basé sur son statut
+     */
+    private function determineResultat($intervention): string
+    {
+        switch ($intervention->statut) {
+            case 'terminee':
+                // Si terminée, on considère que c'est réussi par défaut
+                // On pourrait améliorer cela en analysant le rapport
+                return 'reussi';
+            case 'annulee':
+                return 'echec';
+            case 'en_cours':
+            case 'programmee':
+            default:
+                // Pour les interventions en cours ou programmées, on ne retourne pas de résultat
+                // car elles ne sont pas encore terminées
+                return '';
+        }
     }
 }

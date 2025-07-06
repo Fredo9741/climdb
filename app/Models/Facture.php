@@ -12,22 +12,16 @@ class Facture extends Model
     protected $fillable = [
         'devis_id',
         'client_id',
-        'site_id',
         'numero_facture',
         'date_facture',
         'date_echeance',
-        'montant_ht',
-        'montant_ttc',
         'statut',
         'description',
-        'conditions_paiement',
     ];
 
     protected $casts = [
         'date_facture' => 'date',
         'date_echeance' => 'date',
-        'montant_ht' => 'decimal:2',
-        'montant_ttc' => 'decimal:2',
     ];
 
     // --- Relations ---
@@ -93,18 +87,6 @@ class Facture extends Model
     }
 
     // --- Accesseurs ---
-
-    /**
-     * Calcul automatique de la TVA.
-     */
-    public function getTvaAttribute()
-    {
-        if ($this->montant_ht > 0) {
-            return round((($this->montant_ttc - $this->montant_ht) / $this->montant_ht) * 100, 2);
-        }
-
-        return 0;
-    }
 
     /**
      * Vérification si la facture est en retard.

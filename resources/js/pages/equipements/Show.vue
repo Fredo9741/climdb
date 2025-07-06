@@ -41,7 +41,7 @@
 
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Client</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ equipement.site?.client?.nom_entreprise || equipement.site?.client?.nom }}</p>
+                                          <p class="mt-1 text-sm text-gray-900">{{ equipement.site?.client?.nom }}</p>
                 </div>
 
                 <div>

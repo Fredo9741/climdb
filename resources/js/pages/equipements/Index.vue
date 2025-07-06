@@ -112,7 +112,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm text-gray-900">
-                        {{ equipement.site?.client?.nom_entreprise || equipement.site?.client?.nom || 'N/A' }}
+                        {{ equipement.site?.client?.nom || 'N/A' }}
                       </div>
                       <div v-if="equipement.site?.client?.type_client" class="text-sm text-gray-500 capitalize">
                         {{ equipement.site?.client?.type_client }}
@@ -207,11 +207,10 @@ interface Equipement {
   localisation_precise?: string
   site?: { 
     nom: string
-    client?: {
-      nom?: string
-      nom_entreprise?: string
-      type_client?: string
-    }
+          client?: {
+        nom?: string
+        type_client?: string
+      }
   }
   modele?: { 
     nom: string

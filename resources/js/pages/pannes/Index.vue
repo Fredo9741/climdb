@@ -10,7 +10,7 @@
             Suivi et gestion des pannes d'équipements
           </p>
         </div>
-        <Button v-if="canCreate" @click="$inertia.visit(route('pannes.create'))" class="gap-2">
+        <Button v-if="canCreate" @click="router.visit(route('pannes.create'))" class="gap-2">
           <Icon name="plus" class="h-4 w-4" />
           Nouvelle Panne
         </Button>
@@ -111,9 +111,10 @@
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             >
               <option value="">Tous les statuts</option>
-              <option value="1">En attente</option>
-              <option value="2">En cours</option>
-              <option value="3">Résolue</option>
+              <option value="13">En attente</option>
+              <option value="14">En cours</option>
+              <option value="15">Résolue</option>
+              <option value="16">Annulée</option>
             </select>
           </div>
           <div class="flex items-end">
@@ -205,7 +206,7 @@
             <p class="text-gray-500 dark:text-gray-400">
               {{ searchQuery || selectedPriority || selectedStatus ? 'Aucune panne ne correspond aux filtres sélectionnés.' : 'Aucune panne enregistrée pour le moment.' }}
             </p>
-            <Button v-if="canCreate && !searchQuery && !selectedPriority && !selectedStatus" @click="$inertia.visit(route('pannes.create'))" class="mt-4">
+            <Button v-if="canCreate && !searchQuery && !selectedPriority && !selectedStatus" @click="router.visit(route('pannes.create'))" class="mt-4">
               Créer la première panne
             </Button>
           </div>
@@ -246,9 +247,9 @@ const canDelete = computed(() => page.props.auth.user.roles.includes('admin'))
 
 // Statistiques
 const totalPannes = computed(() => props.pannes.length)
-const pannesEnAttente = computed(() => props.pannes.filter(p => p.statut_demande_id === 1).length)
-const pannesEnCours = computed(() => props.pannes.filter(p => p.statut_demande_id === 2).length)
-const pannesResolues = computed(() => props.pannes.filter(p => p.statut_demande_id === 3).length)
+const pannesEnAttente = computed(() => props.pannes.filter(p => p.statut_demande_id === 13).length)
+const pannesEnCours = computed(() => props.pannes.filter(p => p.statut_demande_id === 14).length)
+const pannesResolues = computed(() => props.pannes.filter(p => p.statut_demande_id === 15).length)
 
 // Pannes filtrées
 const filteredPannes = computed(() => {
@@ -287,9 +288,10 @@ const formatPriority = (priority) => {
 
 const formatStatus = (statusId) => {
   const statuses = {
-    1: 'En attente',
-    2: 'En cours',
-    3: 'Résolue'
+    13: 'En attente',
+    14: 'En cours',
+    15: 'Résolue',
+    16: 'Annulée'
   }
   return statuses[statusId] || 'Inconnu'
 }
@@ -317,9 +319,10 @@ const getPriorityClass = (priority) => {
 
 const getStatusClass = (statusId) => {
   const classes = {
-    1: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
-    2: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
-    3: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+    13: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
+    14: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
+    15: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200',
+    16: 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
   }
   return classes[statusId] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
 }

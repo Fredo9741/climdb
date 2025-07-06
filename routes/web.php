@@ -69,8 +69,15 @@ Route::resource('pannes', PanneController::class)->middleware(['auth', 'verified
 // Routes pour les interventions
 Route::resource('interventions', InterventionController::class)->middleware(['auth', 'verified']);
 
-// Routes pour les devis
-Route::resource('devis', DevisController::class)->middleware(['auth', 'verified']);
+// Routes pour les devis (avec paramètre explicite)
+Route::get('devis', [DevisController::class, 'index'])->name('devis.index')->middleware(['auth', 'verified']);
+Route::get('devis/create', [DevisController::class, 'create'])->name('devis.create')->middleware(['auth', 'verified']);
+Route::post('devis', [DevisController::class, 'store'])->name('devis.store')->middleware(['auth', 'verified']);
+Route::get('devis/{devis}', [DevisController::class, 'show'])->name('devis.show')->middleware(['auth', 'verified']);
+Route::get('devis/{devis}/edit', [DevisController::class, 'edit'])->name('devis.edit')->middleware(['auth', 'verified']);
+Route::put('devis/{devis}', [DevisController::class, 'update'])->name('devis.update')->middleware(['auth', 'verified']);
+Route::patch('devis/{devis}', [DevisController::class, 'update'])->name('devis.update')->middleware(['auth', 'verified']);
+Route::delete('devis/{devis}', [DevisController::class, 'destroy'])->name('devis.destroy')->middleware(['auth', 'verified']);
 Route::patch('devis/{devis}/accepter', [DevisController::class, 'accepter'])->name('devis.accepter')->middleware(['auth', 'verified']);
 Route::patch('devis/{devis}/refuser', [DevisController::class, 'refuser'])->name('devis.refuser')->middleware(['auth', 'verified']);
 
@@ -78,6 +85,13 @@ Route::patch('devis/{devis}/refuser', [DevisController::class, 'refuser'])->name
 Route::resource('factures', FactureController::class)->middleware(['auth', 'verified']);
 Route::patch('factures/{facture}/marquer-payee', [FactureController::class, 'marquerPayee'])->name('factures.marquer-payee')->middleware(['auth', 'verified']);
 Route::post('devis/{devis}/generer-facture', [FactureController::class, 'genererDepuisDevis'])->name('devis.generer-facture')->middleware(['auth', 'verified']);
+
+// Routes admin pour la gestion des techniciens
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'verified'])->group(function () {
+    Route::resource('techniciens', App\Http\Controllers\Admin\TechnicienController::class);
+    Route::post('techniciens/{technicien}/reset-password', [App\Http\Controllers\Admin\TechnicienController::class, 'resetPassword'])
+        ->name('techniciens.reset-password');
+});
 
 require __DIR__.'/auth.php';
 require __DIR__.'/settings.php';

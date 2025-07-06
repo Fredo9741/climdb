@@ -4,6 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens; // Ajouté pour Laravel Sanctum (API authentification)
@@ -22,6 +24,8 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'telephone',
+        'qualification',
         'password',
     ];
 
@@ -71,7 +75,7 @@ class User extends Authenticatable
      */
     public function interventions()
     {
-        return $this->hasMany(Intervention::class);
+        return $this->hasMany(Intervention::class, 'technicien_id');
     }
 
     /**
@@ -144,6 +148,55 @@ class User extends Authenticatable
     public function suiviKilometrage()
     {
         return $this->hasMany(SuiviKilometrage::class);
+    }
+
+    /**
+     * Un utilisateur peut avoir plusieurs habilitations.
+     */
+    public function userHabilitations()
+    {
+        return $this->hasMany(UserHabilitation::class);
+    }
+
+    /**
+     * Relation avec les habilitations via la table pivot
+     */
+    public function habilitations()
+    {
+        return $this->belongsToMany(Habilitation::class, 'user_habilitations')
+                    ->withPivot(['date_obtention', 'date_echeance', 'numero_certificat', 'commentaires', 'actif'])
+                    ->withTimestamps();
+    }
+
+    /**
+     * Vérifier si l'utilisateur est un technicien
+     */
+    public function isTechnicien(): bool
+    {
+        return $this->hasRole('technicien');
+    }
+
+    /**
+     * Obtenir les habilitations expirées
+     */
+    public function getHabilitationsExpirees()
+    {
+        return $this->userHabilitations()
+                    ->where('date_echeance', '<', now())
+                    ->where('actif', true)
+                    ->get();
+    }
+
+    /**
+     * Obtenir les habilitations qui expirent bientôt (dans les 30 jours)
+     */
+    public function getHabilitationsExpirantBientot()
+    {
+        return $this->userHabilitations()
+                    ->where('date_echeance', '>=', now())
+                    ->where('date_echeance', '<=', now()->addDays(30))
+                    ->where('actif', true)
+                    ->get();
     }
 
     // --- Fin des Relations Eloquent ---

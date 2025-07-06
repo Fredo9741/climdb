@@ -34,8 +34,7 @@ class EquipementController extends Controller
                             $q->where('nom', 'like', "%{$search}%");
                         })
                         ->orWhereHas('site.client', function ($q) use ($search) {
-                            $q->where('nom', 'like', "%{$search}%")
-                                ->orWhere('nom_entreprise', 'like', "%{$search}%");
+                            $q->where('nom', 'like', "%{$search}%");
                         })
                         ->orWhereHas('modele', function ($q) use ($search) {
                             $q->where('nom', 'like', "%{$search}%")

@@ -108,7 +108,7 @@
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-1">Client</label>
                 <p class="text-sm text-gray-900">
-                  {{ panne.equipement?.site?.client?.nom_entreprise || panne.equipement?.site?.client?.nom }}
+                                          {{ panne.equipement?.site?.client?.nom }}
                 </p>
               </div>
               <div>

@@ -26,7 +26,7 @@
               <div class="space-y-4">
                 <div>
                   <label class="block text-sm font-medium text-gray-700">Client</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ devis.client?.nom_entreprise || devis.client?.nom }}</p>
+                  <p class="mt-1 text-sm text-gray-900">{{ devis.client?.nom }}</p>
                 </div>
 
                 <div v-if="devis.site">
@@ -35,8 +35,8 @@
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Objet</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ devis.objet }}</p>
+                  <label class="block text-sm font-medium text-gray-700">Description</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ devis.description }}</p>
                 </div>
 
                 <div>
@@ -55,43 +55,26 @@
 
               <div class="space-y-4">
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Date d'émission</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ new Date(devis.date_emission).toLocaleDateString('fr-FR') }}</p>
+                  <label class="block text-sm font-medium text-gray-700">Date du devis</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ new Date(devis.date_devis).toLocaleDateString('fr-FR') }}</p>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Date de validité</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ new Date(devis.date_validite).toLocaleDateString('fr-FR') }}</p>
+                  <label class="block text-sm font-medium text-gray-700">Date d'expiration</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ new Date(devis.date_expiration).toLocaleDateString('fr-FR') }}</p>
                 </div>
 
                 <div>
-                  <label class="block text-sm font-medium text-gray-700">Montant HT</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ devis.montant_ht }}€</p>
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">TVA</label>
-                  <p class="mt-1 text-sm text-gray-900">{{ devis.taux_tva }}%</p>
-                </div>
-
-                <div>
-                  <label class="block text-sm font-medium text-gray-700">Montant TTC</label>
-                  <p class="mt-1 text-lg font-bold text-gray-900">{{ devis.montant_ttc }}€</p>
+                  <label class="block text-sm font-medium text-gray-700">Numéro de devis</label>
+                  <p class="mt-1 text-sm text-gray-900">{{ devis.numero_devis }}</p>
                 </div>
               </div>
             </div>
 
             <div v-if="devis.description" class="mt-6">
-              <label class="block text-sm font-medium text-gray-700">Description</label>
+              <label class="block text-sm font-medium text-gray-700">Description détaillée</label>
               <div class="mt-2 p-3 bg-gray-50 rounded-md">
                 <p class="text-sm text-gray-900">{{ devis.description }}</p>
-              </div>
-            </div>
-
-            <div v-if="devis.conditions" class="mt-6">
-              <label class="block text-sm font-medium text-gray-700">Conditions particulières</label>
-              <div class="mt-2 p-3 bg-gray-50 rounded-md">
-                <p class="text-sm text-gray-900">{{ devis.conditions }}</p>
               </div>
             </div>
 
