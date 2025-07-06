@@ -12,12 +12,13 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // Supprime les rôles existants pour éviter les doublons lors des ré-exécutions
-        Role::query()->delete();
+        // On utilise firstOrCreate pour éviter les exceptions en cas de rôle déjà présent (tests parallèles)
 
-        Role::create(['name' => 'admin', 'guard_name' => 'web']);
-        Role::create(['name' => 'technicien', 'guard_name' => 'web']);
-        Role::create(['name' => 'client', 'guard_name' => 'web']);
-        Role::create(['name' => 'manager', 'guard_name' => 'web']);
+        foreach (['admin', 'technicien', 'client', 'manager'] as $roleName) {
+            Role::firstOrCreate([
+                'name'       => $roleName,
+                'guard_name' => 'web',
+            ]);
+        }
     }
 }
