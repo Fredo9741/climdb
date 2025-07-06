@@ -28,7 +28,14 @@ test('a releve_mesure record can be persisted with minimal valid data', function
         'adresse' => '1 rue site',
         'client_id' => 1,
     ]);
-    \App\Models\Modele::create(['id' => 1, 'nom' => 'Modèle Test', 'type_equipement_id' => 1, 'type_gaz_id' => 1, 'modele_releve_id' => 1]);
+    \App\Models\Modele::create([
+        'id' => 1,
+        'type_equipement_id' => 1,
+        'marque' => 'Generic',
+        'nom' => 'Modèle Test',
+        'type_gaz_id' => 1,
+        'modele_releve_defaut_id' => 1,
+    ]);
     App\Models\Equipement::create([
         'id' => 1,
         'numero_serie' => 'SN-001',
