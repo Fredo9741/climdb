@@ -78,4 +78,12 @@ final class Intervention extends Model
             ->withPivot('quantite_utilisee')
             ->withTimestamps();
     }
+
+    /**
+     * Accesseur site: permet d'accéder directement au site lié à l'intervention (via panne -> équipement -> site).
+     */
+    public function getSiteAttribute()
+    {
+        return $this->panne?->equipement?->site;
+    }
 }
