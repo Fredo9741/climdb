@@ -15,9 +15,9 @@ final class UserRegistrationTest extends TestCase
     public function test_users_can_register(): void
     {
         // Créons d'abord les rôles nécessaires pour le test
-        \Spatie\Permission\Models\Role::create(['name' => 'admin', 'guard_name' => 'web']);
-        \Spatie\Permission\Models\Role::create(['name' => 'technicien', 'guard_name' => 'web']);
-        \Spatie\Permission\Models\Role::create(['name' => 'client', 'guard_name' => 'web']);
+        \Spatie\Permission\Models\Role::findOrCreate('admin', 'web');
+        \Spatie\Permission\Models\Role::findOrCreate('technicien', 'web');
+        \Spatie\Permission\Models\Role::findOrCreate('client', 'web');
 
         $response = $this->post('/register', [
             'name' => 'Test User',

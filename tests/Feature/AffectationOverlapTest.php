@@ -12,6 +12,7 @@ test('no overlapping affectations for a vehicle', function () {
 
     // Créer un utilisateur et un véhicule factices
     App\Models\User::factory()->create(['id' => 1, 'email' => 'test@example.com']);
+    App\Models\StatutVehicule::create(['id' => 1, 'nom' => 'Actif']);
     App\Models\Vehicule::create([
         'id' => 1,
         'marque' => 'Renault',
