@@ -157,7 +157,7 @@
                   Équipements ({{ site.equipements ? site.equipements.length : 0 }})
                 </h3>
                 <Link
-                  :href="route('equipements.create', { site_id: site.id })"
+                  :href="`${route('equipements.create')}?site_id=${site.id}`"
                   class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded text-sm"
                 >
                   + Ajouter un équipement
@@ -199,7 +199,7 @@
                         </span>
                         <div class="flex space-x-1">
                           <Link
-                            :href="route('interventions.create', { equipement_id: equipement.id })"
+                            :href="`${route('interventions.create')}?equipement_id=${equipement.id}`"
                             class="text-green-600 hover:text-green-800 text-xs"
                             title="Nouvelle intervention"
                           >
@@ -221,7 +221,7 @@
                   <p class="mt-1 text-sm text-gray-500">Aucun équipement n'est installé sur ce site</p>
                   <div class="mt-6">
                     <Link
-                      :href="route('equipements.create', { site_id: site.id })"
+                      :href="`${route('equipements.create')}?site_id=${site.id}`"
                       class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
                     >
                       <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

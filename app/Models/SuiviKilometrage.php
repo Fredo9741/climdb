@@ -16,7 +16,7 @@ class SuiviKilometrage extends Model
         'user_id',
         'kilometrage',
         'date_releve',
-        'observations',
+        'notes',
     ];
 
     protected $casts = [
