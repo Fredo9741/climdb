@@ -56,4 +56,16 @@ class AffectationVehicule extends Model
                     ->orWhere('date_fin', '>=', now());
             });
     }
+
+    // --- Méthodes ---
+
+    /**
+     * Vérifier si l'affectation est actuellement active.
+     */
+    public function isActive(): bool
+    {
+        $now = now();
+        return $this->date_debut <= $now && 
+               ($this->date_fin === null || $this->date_fin >= $now);
+    }
 }

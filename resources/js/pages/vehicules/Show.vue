@@ -154,30 +154,65 @@
                         </div>
 
                         <!-- Affectation actuelle -->
-                        <div v-if="vehicule.affectations?.length > 0" class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                             <div class="p-6 bg-white border-b border-gray-200">
-                                <h3 class="text-lg font-medium text-gray-900 mb-4">Affectation actuelle</h3>
+                                <h3 class="text-lg font-medium text-gray-900 mb-4">Affectations</h3>
                                 
-                                <div class="space-y-2">
-                                    <div v-for="affectation in vehicule.affectations" :key="affectation.id">
-                                        <div class="flex items-center">
-                                            <div class="flex-shrink-0 h-8 w-8">
-                                                <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                                    <svg class="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                                    </svg>
+                                <div v-if="vehicule.affectations?.length > 0" class="space-y-4">
+                                    <div v-for="affectation in vehicule.affectations" :key="affectation.id" 
+                                         class="border border-gray-200 rounded-lg p-4">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                                        <svg class="h-5 w-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-4">
+                                                    <p class="text-sm font-medium text-gray-900">
+                                                        {{ affectation.user?.name || 'Non assigné' }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ affectation.motif }}
+                                                    </p>
+                                                    <p class="text-xs text-gray-400">
+                                                        Du {{ formatDate(affectation.date_debut) }}
+                                                        <span v-if="affectation.date_fin">
+                                                            au {{ formatDate(affectation.date_fin) }}
+                                                        </span>
+                                                    </p>
                                                 </div>
                                             </div>
-                                            <div class="ml-3">
-                                                <p class="text-sm font-medium text-gray-900">
-                                                    {{ affectation.user?.name || 'Non assigné' }}
-                                                </p>
-                                                <p class="text-sm text-gray-500">
-                                                    Depuis {{ formatDate(affectation.date_debut) }}
-                                                </p>
+                                            <div class="flex items-center space-x-2">
+                                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full"
+                                                      :class="affectation.date_fin ? 'bg-gray-100 text-gray-800' : 'bg-green-100 text-green-800'">
+                                                    {{ affectation.date_fin ? 'Terminée' : 'Active' }}
+                                                </span>
+                                                <Link
+                                                    v-if="!affectation.date_fin"
+                                                    :href="route('vehicules.edit', vehicule.id)"
+                                                    class="text-blue-600 hover:text-blue-800 text-sm"
+                                                >
+                                                    Modifier
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                
+                                <div v-else class="text-center py-4">
+                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    <p class="mt-2 text-sm text-gray-500">Aucune affectation</p>
+                                    <Link
+                                        :href="route('vehicules.edit', vehicule.id)"
+                                        class="mt-2 inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-blue-700 bg-blue-100 hover:bg-blue-200"
+                                    >
+                                        Ajouter une affectation
+                                    </Link>
                                 </div>
                             </div>
                         </div>

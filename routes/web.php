@@ -56,6 +56,8 @@ Route::resource('equipements', EquipementController::class)->middleware(['auth',
 
 // Routes pour les véhicules
 Route::resource('vehicules', VehiculeController::class)->middleware(['auth', 'verified']);
+Route::patch('affectations-vehicules/{affectation}/terminer', [VehiculeController::class, 'terminerAffectation'])
+    ->name('affectations-vehicules.terminer')->middleware(['auth', 'verified']);
 
 // Routes pour les bouteilles de gaz
 Route::resource('bouteilles-gaz', BouteilleGazController::class)->middleware(['auth', 'verified']);
