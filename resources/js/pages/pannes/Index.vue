@@ -10,7 +10,7 @@
             Suivi et gestion des pannes d'équipements
           </p>
         </div>
-        <Button @click="router.visit(route('pannes.create'))" class="gap-2">
+        <Button v-if="canCreate" @click="router.visit(route('pannes.create'))" class="gap-2">
           <Icon name="plus" class="h-4 w-4" />
           Nouvelle Panne
         </Button>
