@@ -53,9 +53,11 @@ final class TechnicienController extends Controller
     public function create(): Response
     {
         $habilitations = Habilitation::actives()->orderBy('nom')->get();
+        $qualifications = \App\Models\Qualification::orderBy('nom')->get();
 
         return Inertia::render('admin/techniciens/Create', [
             'habilitations' => $habilitations,
+            'qualifications' => $qualifications,
         ]);
     }
 
@@ -194,6 +196,7 @@ final class TechnicienController extends Controller
 
         $technicien->load(['userHabilitations.habilitation', 'affectationsVehicules.vehicule']);
         $habilitations = Habilitation::actives()->orderBy('nom')->get();
+        $qualifications = \App\Models\Qualification::orderBy('nom')->get();
         $vehicules = \App\Models\Vehicule::actifs()->orderBy('marque')->orderBy('modele')->get();
 
         return Inertia::render('admin/techniciens/Edit', [
@@ -227,6 +230,7 @@ final class TechnicienController extends Controller
                 }),
             ],
             'habilitations' => $habilitations,
+            'qualifications' => $qualifications,
             'vehicules' => $vehicules,
         ]);
     }

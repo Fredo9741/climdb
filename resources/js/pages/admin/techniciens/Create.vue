@@ -68,12 +68,18 @@
 
                 <div>
                   <Label for="qualification">Qualification</Label>
-                  <Input
+                  <input
+                    list="qualification-list"
                     id="qualification"
                     v-model="form.qualification"
-                    type="text"
-                    placeholder="ex: Technicien frigoriste"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                    placeholder="Sélectionner ou saisir"
                   />
+                  <datalist id="qualification-list">
+                    <option v-for="q in qualifications" :key="q.id" :value="q.nom">
+                      {{ q.nom }}
+                    </option>
+                  </datalist>
                   <p v-if="errors.qualification" class="mt-1 text-sm text-red-600 dark:text-red-400">
                     {{ errors.qualification }}
                   </p>
@@ -233,8 +239,15 @@ interface Habilitation {
   duree_validite_mois: number
 }
 
+interface Qualification {
+  id: number
+  nom: string
+  description: string | null
+}
+
 interface Props {
   habilitations: Habilitation[]
+  qualifications: Qualification[]
   errors: Record<string, string>
 }
 

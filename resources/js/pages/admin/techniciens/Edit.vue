@@ -1,26 +1,28 @@
 <template>
   <AppLayout title="Modifier le technicien">
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xl font-semibold text-gray-900">
-            Modifier le technicien
-          </h2>
-          <p class="mt-1 text-sm text-gray-600">
-            Modifier les informations et habilitations du technicien
-          </p>
-        </div>
-        <div class="flex gap-2">
-          <Button
-            variant="outline"
-            @click="$inertia.visit(route('admin.techniciens.index'))"
-          >
-            <Icon name="arrow-left" class="mr-2 h-4 w-4" />
-            Retour
-          </Button>
-        </div>
+
+    <!-- En-tête principal -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Modifier le technicien</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Met à jour les informations et habilitations du technicien</p>
       </div>
-    </template>
+      <Button
+        variant="outline"
+        @click="$inertia.visit(route('admin.techniciens.index'))"
+      >
+        <Icon name="arrow-left" class="mr-2 h-4 w-4" />
+        Retour
+      </Button>
+    </div>
+
+    <!-- Messages flash -->
+    <div v-if="$page.props.flash?.success" class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+      {{ $page.props.flash.success }}
+    </div>
+    <div v-if="$page.props.flash?.error" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+      {{ $page.props.flash.error }}
+    </div>
 
     <form @submit.prevent="submit" class="space-y-6">
       <!-- Informations générales -->
@@ -61,11 +63,25 @@
             </div>
             <div>
               <Label for="qualification">Qualification</Label>
-              <Input
+              <input
+                list="qualification-list"
                 id="qualification"
                 v-model="form.qualification"
-                type="text"
-                :error="form.errors.qualification"
+                class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+              />
+              <datalist id="qualification-list">
+                <option v-for="q in qualifications" :key="q.id" :value="q.nom">{{ q.nom }}</option>
+              </datalist>
+            </div>
+            <!-- Nouveau mot de passe -->
+            <div>
+              <Label for="password">Nouveau mot de passe</Label>
+              <Input
+                id="password"
+                v-model="form.password"
+                type="password"
+                placeholder="Laisser vide pour ne pas changer"
+                :error="form.errors.password"
               />
             </div>
           </div>
@@ -125,7 +141,6 @@
                   id="habilitation_id"
                   v-model="newHabilitation.habilitation_id"
                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  required
                 >
                   <option value="">Sélectionner une habilitation</option>
                   <option
@@ -143,7 +158,6 @@
                   id="date_obtention"
                   v-model="newHabilitation.date_obtention"
                   type="date"
-                  required
                 />
               </div>
               <div>
@@ -232,7 +246,6 @@
                   id="vehicule_id"
                   v-model="newAffectationVehicule.vehicule_id"
                   class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                  required
                 >
                   <option value="">Sélectionner un véhicule</option>
                   <option
@@ -250,7 +263,6 @@
                   id="date_debut_vehicule"
                   v-model="newAffectationVehicule.date_debut"
                   type="date"
-                  required
                 />
               </div>
               <div>
@@ -292,6 +304,11 @@
         >
           Annuler
         </Button>
+        <!-- Bouton réinitialiser mot de passe -->
+        <Button type="button" variant="outline" @click="resetPassword">
+          <Icon name="refresh-ccw" class="mr-2 h-4 w-4" />
+          Réinitialiser MDP
+        </Button>
         <Button type="submit" :disabled="form.processing">
           <Icon name="save" class="mr-2 h-4 w-4" />
           {{ form.processing ? 'Enregistrement...' : 'Enregistrer' }}
@@ -302,7 +319,7 @@
 </template>
 
 <script setup lang="ts">
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, useForm, router } from '@inertiajs/vue3'
 import { computed } from 'vue'
 import AppLayout from '@/layouts/AppLayout.vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -321,6 +338,12 @@ interface Vehicule {
   marque: string
   modele: string
   immatriculation: string
+}
+
+interface Qualification {
+  id: number
+  nom: string
+  description: string | null
 }
 
 interface TechnicienHabilitation {
@@ -357,6 +380,7 @@ interface Props {
   technicien: Technicien
   habilitations: Habilitation[]
   vehicules: Vehicule[]
+  qualifications: Qualification[]
 }
 
 const props = defineProps<Props>()
@@ -366,6 +390,7 @@ const form = useForm({
   email: props.technicien.email,
   telephone: props.technicien.telephone || '',
   qualification: props.technicien.qualification || '',
+  password: '',
   habilitations: [] as Array<{
     habilitation_id: number
     date_obtention: string
@@ -455,5 +480,11 @@ const formatDate = (date: string) => {
     month: '2-digit',
     year: 'numeric'
   })
+}
+
+const resetPassword = () => {
+  if (confirm('Réinitialiser le mot de passe ? Un nouveau mot de passe sera généré.')) {
+    router.post(route('admin.techniciens.reset-password', props.technicien.id))
+  }
 }
 </script> 

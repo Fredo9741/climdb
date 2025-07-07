@@ -43,6 +43,7 @@ class ClientController extends Controller
             'pays' => 'required|string|max:100',
             'telephone' => 'required|string|max:20',
             'email' => 'required|email|unique:clients,email',
+            'actif' => 'boolean',
         ]);
 
         Client::create($validated);
@@ -86,6 +87,7 @@ class ClientController extends Controller
             'pays' => 'required|string|max:100',
             'telephone' => 'required|string|max:20',
             'email' => 'required|email|unique:clients,email,'.$client->id,
+            'actif' => 'boolean',
         ]);
 
         $client->update($validated);

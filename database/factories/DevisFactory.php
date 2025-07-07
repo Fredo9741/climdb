@@ -15,8 +15,8 @@ class DevisFactory extends Factory
     {
         return [
             'client_id' => Client::factory(),
-            'date_devis' => now(),
-            'date_expiration' => now()->addMonth(),
+            'date_creation' => now(),
+            'date_validite' => now()->addMonth(),
             'statut' => 'en attente',
             'montant_total' => $this->faker->randomFloat(2, 100, 1000),
         ];

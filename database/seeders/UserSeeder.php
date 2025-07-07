@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             $admin->assignRole($adminRole);
         }
 
-        // Créer un technicien
+   /*     // Créer un technicien
         $technicien = User::create([
             'name' => 'Technicien User',
             'email' => 'tech@example.com',
@@ -51,6 +51,6 @@ class UserSeeder extends Seeder
         $clientRole = Role::where('name', 'client')->first();
         if ($clientRole) {
             $clientUser->assignRole($clientRole);
-        }
+        } */
     }
 }

@@ -98,39 +98,29 @@
                 </div>
               </div>
 
-              <!-- Contact sur site -->
+              <!-- Contacts du site -->
               <div class="bg-gray-50 p-4 rounded-lg">
                 <h3 class="text-lg font-semibold mb-4 text-gray-800 flex items-center">
                   <svg class="h-5 w-5 mr-2 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
-                  Contact sur site
+                  Contacts du site ({{ contacts.length }})
                 </h3>
-                <div v-if="site.contact_nom || site.contact_telephone || site.contact_email" class="space-y-2">
-                  <div v-if="site.contact_nom">
-                    <span class="font-medium text-gray-700">Nom :</span>
-                    <span class="ml-2 text-gray-900">{{ site.contact_nom }}</span>
-                  </div>
-                  <div v-if="site.contact_fonction">
-                    <span class="font-medium text-gray-700">Fonction :</span>
-                    <span class="ml-2 text-gray-900">{{ site.contact_fonction }}</span>
-                  </div>
-                  <div v-if="site.contact_telephone">
-                    <span class="font-medium text-gray-700">Téléphone :</span>
-                    <a :href="`tel:${site.contact_telephone}`" class="ml-2 text-blue-600 hover:text-blue-800">
-                      {{ site.contact_telephone }}
-                    </a>
-                  </div>
-                  <div v-if="site.contact_email">
-                    <span class="font-medium text-gray-700">Email :</span>
-                    <a :href="`mailto:${site.contact_email}`" class="ml-2 text-blue-600 hover:text-blue-800">
-                      {{ site.contact_email }}
-                    </a>
+                <div v-if="contacts.length > 0" class="space-y-4">
+                  <div v-for="person in contacts" :key="person.id" class="border rounded-lg p-3">
+                    <p class="font-medium text-gray-900">{{ person.prenom }} {{ person.nom }}</p>
+                    <p v-if="person.fonction" class="text-sm text-gray-600">{{ person.fonction }}</p>
+                    <p v-if="person.telephone" class="text-sm">
+                      <span class="font-medium">Tel :</span>
+                      <a :href="`tel:${person.telephone}`" class="text-blue-600 hover:text-blue-800">{{ person.telephone }}</a>
+                    </p>
+                    <p class="text-sm">
+                      <span class="font-medium">Email :</span>
+                      <a :href="`mailto:${person.email}`" class="text-blue-600 hover:text-blue-800">{{ person.email }}</a>
+                    </p>
                   </div>
                 </div>
-                <div v-else class="text-gray-500 text-sm">
-                  Aucun contact défini
-                </div>
+                <div v-else class="text-gray-500 text-sm">Aucun contact défini</div>
               </div>
             </div>
 
@@ -289,6 +279,15 @@
 import { Link } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 
+interface Props {
+  site: any
+  contacts: any[]
+}
+
+const props = defineProps<Props>()
+
+const contacts = props.contacts ?? []
+
 interface Client {
   id: number
   nom: string
@@ -342,9 +341,7 @@ interface Site {
   interventions_recentes?: Intervention[]
 }
 
-defineProps<{
-  site: Site
-}>()
+const site: Site = props.site
 
 const formatDate = (date: string) => {
   return new Date(date).toLocaleDateString('fr-FR')

@@ -30,12 +30,13 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    // Si l'utilisateur est déjà authentifié, envoyer directement au tableau de bord
+    if (auth()->check()) {
+        return redirect()->route('dashboard');
+    }
+
+    // Sinon, afficher directement la page de connexion (composant Inertia)
+    return inertia('auth/Login');
 })->name('home');
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');

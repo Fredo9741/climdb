@@ -1,16 +1,28 @@
 <template>
   <AppLayout title="Gestion des Techniciens">
-    <template #header>
-      <div class="flex items-center justify-between">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-          Gestion des Techniciens
-        </h2>
-        <Button @click="router.visit(route('admin.techniciens.create'))" class="gap-2">
-          <Icon name="plus" class="h-4 w-4" />
-          Nouveau Technicien
-        </Button>
+
+    <!-- Messages flash -->
+    <div v-if="$page.props.flash?.success" class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+      {{ $page.props.flash.success }}
+    </div>
+    <div v-if="$page.props.flash?.error" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+      {{ $page.props.flash.error }}
+    </div>
+
+    <!-- En-tête principal -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Techniciens</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Gérez vos techniciens et leurs habilitations</p>
       </div>
-    </template>
+      <Button
+        @click="router.visit(route('admin.techniciens.create'))"
+        class="bg-blue-600 hover:bg-blue-700 text-white gap-2"
+      >
+        <Icon name="Plus" class="h-4 w-4" />
+        Nouveau technicien
+      </Button>
+    </div>
 
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">

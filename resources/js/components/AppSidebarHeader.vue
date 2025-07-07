@@ -23,5 +23,9 @@ withDefaults(
                 <Breadcrumbs :breadcrumbs="breadcrumbs" />
             </template>
         </div>
+        <!-- Slot pour le contenu d'en-tête spécifique à la page (défini via <template #header>) -->
+        <div class="ml-auto flex items-center gap-2">
+            <slot />
+        </div>
     </header>
 </template>

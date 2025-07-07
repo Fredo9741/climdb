@@ -1,19 +1,16 @@
 <template>
   <AppLayout>
-    <template #header>
-      <div class="flex items-center gap-4">
-        <Button variant="ghost" @click="router.visit('/clients')" size="sm">
-          <Icon name="ArrowLeft" class="h-4 w-4 mr-2" />
-          Retour
-        </Button>
-        <div>
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Nouveau client</h1>
-          <p class="text-gray-600 dark:text-gray-400 mt-1">
-            Ajoutez un nouveau client à votre base de données
-          </p>
-        </div>
+    <!-- En-tête principal -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Nouveau client</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Ajoutez un nouveau client à votre base de données</p>
       </div>
-    </template>
+      <Button variant="outline" @click="router.visit('/clients')">
+        <Icon name="ArrowLeft" class="h-4 w-4 mr-2" />
+        Retour
+      </Button>
+    </div>
 
     <form @submit.prevent="submit" class="max-w-4xl">
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -237,6 +234,10 @@
                   <option value="Belgique">Belgique</option>
                   <option value="Suisse">Suisse</option>
                   <option value="Luxembourg">Luxembourg</option>
+                  <option value="Réunion">Réunion</option>
+                  <option value="Mayotte">Mayotte</option>
+                  <option value="Maurice">Maurice</option>
+                  <option value="Madagascar">Madagascar</option>
                 </select>
                 <InputError :message="form.errors.pays" class="mt-1" />
               </div>

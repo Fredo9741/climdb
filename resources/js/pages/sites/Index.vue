@@ -90,7 +90,7 @@ import AppLayout from '@/layouts/AppLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Icon from '@/components/Icon.vue'
 
-defineProps<{
+const props = defineProps<{
   sites: Array<{
     id: number
     nom: string

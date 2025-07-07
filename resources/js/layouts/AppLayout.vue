@@ -13,6 +13,11 @@ withDefaults(defineProps<Props>(), {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbs">
+        <!-- Transmet le slot d'en-tête aux composants internes -->
+        <template #header>
+            <slot name="header" />
+        </template>
+
         <slot />
     </AppLayout>
 </template>

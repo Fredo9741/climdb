@@ -22,6 +22,7 @@ class ClientSeeder extends Seeder
             'pays' => 'France',
             'telephone' => '0123456789',
             'email' => 'contact@alpha.com',
+            'actif' => true,
         ]);
 
         Client::create([
@@ -32,6 +33,7 @@ class ClientSeeder extends Seeder
             'pays' => 'France',
             'telephone' => '0987654321',
             'email' => 'info@beta.fr',
+            'actif' => true,
         ]);
     }
 }

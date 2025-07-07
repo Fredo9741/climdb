@@ -4,16 +4,17 @@
       <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
-            <div class="flex justify-between items-center mb-6">
+            <!-- En-tête principal -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div>
-                <h2 class="text-2xl font-bold text-gray-900">Modifier le site</h2>
-                <p class="text-gray-600">{{ site.nom }}</p>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Modifier le site</h1>
+                <p class="text-gray-600 dark:text-gray-400 mt-1">{{ site.nom }}</p>
               </div>
               <Link
                 :href="route('sites.index')"
-                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-md px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
-                Retour
+                <Icon name="ArrowLeft" class="h-4 w-4 mr-2 inline" /> Retour
               </Link>
             </div>
 
@@ -194,6 +195,109 @@
                 </div>
               </div>
 
+              <!-- Contacts -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Contacts du site</h3>
+                <div class="space-y-4">
+                  <div v-for="(contact, index) in form.contacts" :key="index">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                      <div>
+                        <label for="contact_nom" class="block text-sm font-medium text-gray-700">
+                          Nom *
+                        </label>
+                        <input
+                          id="contact_nom"
+                          v-model="contact.nom"
+                          type="text"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          placeholder="Ex: Dupont"
+                          required
+                        />
+                        <div v-if="form.errors[`contacts.${index}.nom`]" class="mt-1 text-sm text-red-600">
+                          {{ form.errors[`contacts.${index}.nom`] }}
+                        </div>
+                      </div>
+                      <div>
+                        <label for="contact_prenom" class="block text-sm font-medium text-gray-700">
+                          Prénom *
+                        </label>
+                        <input
+                          id="contact_prenom"
+                          v-model="contact.prenom"
+                          type="text"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          placeholder="Ex: Jean"
+                          required
+                        />
+                        <div v-if="form.errors[`contacts.${index}.prenom`]" class="mt-1 text-sm text-red-600">
+                          {{ form.errors[`contacts.${index}.prenom`] }}
+                        </div>
+                      </div>
+                      <div>
+                        <label for="contact_fonction" class="block text-sm font-medium text-gray-700">
+                          Fonction *
+                        </label>
+                        <input
+                          id="contact_fonction"
+                          v-model="contact.fonction"
+                          type="text"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          placeholder="Ex: Responsable de la sécurité"
+                          required
+                        />
+                        <div v-if="form.errors[`contacts.${index}.fonction`]" class="mt-1 text-sm text-red-600">
+                          {{ form.errors[`contacts.${index}.fonction`] }}
+                        </div>
+                      </div>
+                      <div>
+                        <label for="contact_telephone" class="block text-sm font-medium text-gray-700">
+                          Téléphone
+                        </label>
+                        <input
+                          id="contact_telephone"
+                          v-model="contact.telephone"
+                          type="text"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          placeholder="Ex: 01 23 45 67 89"
+                        />
+                        <div v-if="form.errors[`contacts.${index}.telephone`]" class="mt-1 text-sm text-red-600">
+                          {{ form.errors[`contacts.${index}.telephone`] }}
+                        </div>
+                      </div>
+                      <div>
+                        <label for="contact_email" class="block text-sm font-medium text-gray-700">
+                          Email
+                        </label>
+                        <input
+                          id="contact_email"
+                          v-model="contact.email"
+                          type="email"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                          placeholder="Ex: contact@example.com"
+                        />
+                        <div v-if="form.errors[`contacts.${index}.email`]" class="mt-1 text-sm text-red-600">
+                          {{ form.errors[`contacts.${index}.email`] }}
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      @click="removeContact(index)"
+                      class="mt-2 text-red-600 hover:underline"
+                    >
+                      Supprimer ce contact
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    @click="addContact"
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                  >
+                    Ajouter un contact
+                  </button>
+                </div>
+              </div>
+
               <!-- Boutons d'action -->
               <div class="flex justify-between pt-6 border-t">
                 <Link
@@ -223,10 +327,7 @@
 import { Link, useForm } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
 
-const props = defineProps<{
-  site: any
-  clients: any[]
-}>()
+const props = defineProps<{ site: any; clients: any[]; contacts: any[] }>()
 
 // Formulaire pré-rempli avec les données du site
 const form = useForm({
@@ -237,8 +338,21 @@ const form = useForm({
   code_postal: props.site.code_postal,
   pays: props.site.pays,
   latitude: props.site.latitude,
-  longitude: props.site.longitude,
+  longitude: props.site.longitude ?? '',
+  contacts: props.contacts.length ? props.contacts.map(c => ({ ...c })) : [],
 })
+
+if (form.contacts.length === 0) {
+  form.contacts.push({ nom: '', prenom: '', fonction: '', telephone: '', email: '' })
+}
+
+const addContact = () => {
+  form.contacts.push({ nom: '', prenom: '', fonction: '', telephone: '', email: '' })
+}
+
+const removeContact = (index: number) => {
+  form.contacts.splice(index, 1)
+}
 
 const submit = () => {
   form.put(route('sites.update', props.site.id))

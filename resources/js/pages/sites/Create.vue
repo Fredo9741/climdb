@@ -4,16 +4,17 @@
       <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div class="p-6 bg-white border-b border-gray-200">
-            <div class="flex justify-between items-center mb-6">
+            <!-- En-tête principal -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
               <div>
-                <h2 class="text-2xl font-bold text-gray-900">Nouveau Site</h2>
-                <p class="text-gray-600">Créer un nouveau site client</p>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Nouveau site</h1>
+                <p class="text-gray-600 dark:text-gray-400 mt-1">Créer un nouveau site client</p>
               </div>
               <Link
                 :href="route('sites.index')"
-                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                class="border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-md px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800"
               >
-                Retour
+                <Icon name="ArrowLeft" class="h-4 w-4 mr-2 inline" /> Retour
               </Link>
             </div>
 
@@ -329,6 +330,45 @@
                 </div>
               </div>
 
+              <!-- Contacts du site -->
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h3 class="text-lg font-semibold mb-4 text-gray-800">Contacts du site</h3>
+                <div v-if="form.contacts.length === 0" class="text-gray-500 mb-4">Aucun contact ajouté</div>
+                <div v-for="(contact, index) in form.contacts" :key="index" class="border rounded-lg p-4 mb-4">
+                  <div class="flex justify-between items-center mb-2">
+                    <h4 class="font-medium text-gray-800">Contact {{ index + 1 }}</h4>
+                    <Button variant="outline" size="sm" @click="removeContact(index)">
+                      <Icon name="Trash" class="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label :for="`nom-${index}`">Nom *</Label>
+                      <Input :id="`nom-${index}`" v-model="contact.nom" type="text" required />
+                    </div>
+                    <div>
+                      <Label :for="`prenom-${index}`">Prénom *</Label>
+                      <Input :id="`prenom-${index}`" v-model="contact.prenom" type="text" required />
+                    </div>
+                    <div>
+                      <Label :for="`fonction-${index}`">Fonction</Label>
+                      <Input :id="`fonction-${index}`" v-model="contact.fonction" type="text" />
+                    </div>
+                    <div>
+                      <Label :for="`telephone-${index}`">Téléphone</Label>
+                      <Input :id="`telephone-${index}`" v-model="contact.telephone" type="tel" />
+                    </div>
+                    <div class="md:col-span-2">
+                      <Label :for="`email-${index}`">Email *</Label>
+                      <Input :id="`email-${index}`" v-model="contact.email" type="email" required />
+                    </div>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm" @click="addContact">
+                  <Icon name="Plus" class="h-4 w-4 mr-2" /> Ajouter un contact
+                </Button>
+              </div>
+
               <!-- Boutons d'action -->
               <div class="flex items-center justify-end space-x-4 pt-6">
                 <Link
@@ -355,9 +395,12 @@
 </template>
 
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3'
+import { Link, useForm } from '@inertiajs/vue3'
 import AppLayout from '@/layouts/AppLayout.vue'
-import { useForm } from '@inertiajs/vue3'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import Icon from '@/components/Icon.vue'
 
 interface Client {
   id: number
@@ -383,10 +426,23 @@ const form = useForm({
   contact_telephone: '',
   contact_email: '',
   contact_fonction: '',
-  notes: ''
+  notes: '',
+  contacts: [] as Array<{ nom: string; prenom: string; fonction: string; telephone: string; email: string }>
 })
+
+if (form.contacts.length === 0) {
+  form.contacts.push({ nom: '', prenom: '', fonction: '', telephone: '', email: '' })
+}
 
 const submit = () => {
   form.post(route('sites.store'))
+}
+
+const addContact = () => {
+  form.contacts.push({ nom: '', prenom: '', fonction: '', telephone: '', email: '' })
+}
+
+const removeContact = (index: number) => {
+  form.contacts.splice(index, 1)
 }
 </script> 

@@ -1,21 +1,23 @@
 <template>
   <AppLayout>
-    <template #header>
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Interventions</h1>
-          <p class="text-gray-600 dark:text-gray-400 mt-1">
-            {{ isTechnicien ? 'Vos interventions' : 'Toutes les interventions' }}
-          </p>
-        </div>
-        <div class="flex gap-2">
-          <Button v-if="canCreate" @click="router.visit('/interventions/create')">
-            <Icon name="Plus" class="h-4 w-4 mr-2" />
-            <span class="hidden sm:inline">Nouvelle</span> intervention
-          </Button>
-        </div>
+
+    <!-- En-tête principal -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Interventions</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">
+          {{ isTechnicien ? 'Vos interventions' : 'Toutes les interventions' }}
+        </p>
       </div>
-    </template>
+      <Button
+        v-if="canCreate"
+        @click="router.visit('/interventions/create')"
+        class="bg-blue-600 hover:bg-blue-700 text-white"
+      >
+        <Icon name="Plus" class="h-4 w-4 mr-2" />
+        <span class="hidden sm:inline">Nouvelle</span> intervention
+      </Button>
+    </div>
 
     <!-- Vue en onglets pour mobile -->
     <div class="sm:hidden mb-6">

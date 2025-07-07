@@ -49,9 +49,33 @@ class SiteController extends Controller
             'pays' => 'required|string|max:100',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
+            'contacts' => 'array',
+            'contacts.*.nom' => 'required|string|max:255',
+            'contacts.*.prenom' => 'required|string|max:255',
+            'contacts.*.fonction' => 'nullable|string|max:255',
+            'contacts.*.telephone' => 'nullable|string|max:20',
+            'contacts.*.email' => 'required|email|max:255|distinct',
         ]);
 
-        Site::create($validated);
+        $contactsData = $validated['contacts'] ?? [];
+        unset($validated['contacts']);
+
+        $site = Site::create($validated);
+
+        // Traiter les contacts
+        foreach ($contactsData as $contactData) {
+            $contact = \App\Models\PersonneContact::firstOrCreate([
+                'email' => $contactData['email'],
+            ], [
+                'nom' => $contactData['nom'],
+                'prenom' => $contactData['prenom'],
+                'fonction' => $contactData['fonction'] ?? null,
+                'telephone' => $contactData['telephone'] ?? null,
+                'notes' => null,
+            ]);
+
+            $site->personnesContact()->syncWithoutDetaching($contact->id);
+        }
 
         return redirect()->route('sites.index')
             ->with('success', 'Site créé avec succès !');
@@ -62,10 +86,20 @@ class SiteController extends Controller
      */
     public function show(Site $site): Response
     {
-        $site->load(['client', 'equipements.modele']);
+        $site->load(['client', 'equipements.modele', 'personnesContact']);
 
         return Inertia::render('sites/Show', [
             'site' => $site,
+            'contacts' => $site->personnesContact->map(function ($c) {
+                return [
+                    'id' => $c->id,
+                    'nom' => $c->nom,
+                    'prenom' => $c->prenom,
+                    'fonction' => $c->fonction,
+                    'telephone' => $c->telephone,
+                    'email' => $c->email,
+                ];
+            }),
         ]);
     }
 
@@ -75,10 +109,21 @@ class SiteController extends Controller
     public function edit(Site $site): Response
     {
         $clients = Client::all();
+        $site->load('personnesContact');
 
         return Inertia::render('sites/Edit', [
             'site' => $site,
             'clients' => $clients,
+            'contacts' => $site->personnesContact->map(function ($c) {
+                return [
+                    'id' => $c->id,
+                    'nom' => $c->nom,
+                    'prenom' => $c->prenom,
+                    'fonction' => $c->fonction,
+                    'telephone' => $c->telephone,
+                    'email' => $c->email,
+                ];
+            }),
         ]);
     }
 
@@ -96,9 +141,33 @@ class SiteController extends Controller
             'pays' => 'required|string|max:100',
             'latitude' => 'nullable|numeric|between:-90,90',
             'longitude' => 'nullable|numeric|between:-180,180',
+            'contacts' => 'array',
+            'contacts.*.nom' => 'required|string|max:255',
+            'contacts.*.prenom' => 'required|string|max:255',
+            'contacts.*.fonction' => 'nullable|string|max:255',
+            'contacts.*.telephone' => 'nullable|string|max:20',
+            'contacts.*.email' => 'required|email|max:255|distinct',
         ]);
 
+        $contactsData = $validated['contacts'] ?? [];
+        unset($validated['contacts']);
+
         $site->update($validated);
+
+        // Mettre à jour les contacts : on détache et rattache
+        $site->personnesContact()->detach();
+        foreach ($contactsData as $contactData) {
+            $contact = \App\Models\PersonneContact::firstOrCreate([
+                'email' => $contactData['email'],
+            ], [
+                'nom' => $contactData['nom'],
+                'prenom' => $contactData['prenom'],
+                'fonction' => $contactData['fonction'] ?? null,
+                'telephone' => $contactData['telephone'] ?? null,
+                'notes' => null,
+            ]);
+            $site->personnesContact()->syncWithoutDetaching($contact->id);
+        }
 
         return redirect()->route('sites.index')
             ->with('success', 'Site mis à jour avec succès !');

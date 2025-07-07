@@ -1,35 +1,29 @@
 <template>
   <AppLayout>
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            Modèles de Relevés
-          </h2>
-          <p class="mt-1 text-sm text-gray-600">
-            Gérez les modèles de relevés de mesures pour vos équipements
-          </p>
-        </div>
-        <div class="flex items-center space-x-2">
-          <Button 
-            @click="$inertia.visit(route('modeles-releves.create'))"
-            variant="default"
-            class="flex items-center gap-2"
-          >
-            <Icon name="Plus" class="w-4 h-4" />
-            Nouveau Modèle
-          </Button>
-          <Button 
-            @click="$inertia.visit(route('releves-mesures.create'))"
-            variant="secondary"
-            class="flex items-center gap-2"
-          >
-            <Icon name="FilePlus" class="w-4 h-4" />
-            Nouveau Relevé
-          </Button>
-        </div>
+    <!-- En-tête principal -->
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Modèles de Relevés</h1>
+        <p class="text-gray-600 dark:text-gray-400 mt-1">Gérez les modèles de relevés de mesures pour vos équipements</p>
       </div>
-    </template>
+      <div class="flex items-center gap-2">
+        <Button
+          @click="$inertia.visit(route('modeles-releves.create'))"
+          class="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2"
+        >
+          <Icon name="Plus" class="w-4 h-4" />
+          Nouveau modèle
+        </Button>
+        <Button
+          @click="$inertia.visit(route('releves-mesures.create'))"
+          variant="outline"
+          class="flex items-center gap-2"
+        >
+          <Icon name="FilePlus" class="w-4 h-4" />
+          Nouveau relevé
+        </Button>
+      </div>
+    </div>
 
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">

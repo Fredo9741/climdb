@@ -20,6 +20,7 @@ class ClientFactory extends Factory
             'pays' => $this->faker->countryCode,
             'telephone' => $this->faker->phoneNumber,
             'email' => $this->faker->unique()->safeEmail,
+            'actif' => $this->faker->boolean(90),
         ];
     }
 } 
